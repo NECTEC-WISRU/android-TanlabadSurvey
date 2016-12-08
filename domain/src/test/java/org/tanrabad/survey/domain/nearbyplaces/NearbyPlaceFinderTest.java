@@ -1,27 +1,58 @@
 package org.tanrabad.survey.domain.nearbyplaces;
 
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import org.jmock.Expectations;
+import org.jmock.auto.Mock;
 import org.jmock.integration.junit4.JUnitRuleMockery;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.tanrabad.survey.domain.place.PlaceListPresenter;
 import org.tanrabad.survey.domain.place.PlaceRepository;
 import org.tanrabad.survey.entity.Place;
 import org.tanrabad.survey.entity.field.Location;
+import org.tanrabad.survey.entity.field.LocationBound;
 
 public class NearbyPlaceFinderTest {
-    @Rule
-    public JUnitRuleMockery context = new JUnitRuleMockery();
+    private static final int DISTANCE_IN_KM = 5;
+    @Rule public JUnitRuleMockery context = new JUnitRuleMockery();
 
-    NearbyPlacesFinderController nearbyPlacesFinderController;
-    private PlaceRepository placeRepository;
+    @Mock private PlaceRepository placeRepository;
+    @Mock private LocationBoundary locationBoundary;
+    @Mock private PlaceListPresenter placeListPresenter;
+    private Location myLocation;
 
-    @Before
-    public void setup(){
-        placeRepository = context.mock(PlaceRepository.class);
+    private LocationBound locationBoundaryBox;
+    private List<Place> allPlaces;
+
+    @Before public void setup() {
+        myLocation = new Location(20, 20);
+        locationBoundaryBox = new LocationBound(new Location(10,10), new Location(10,10));
+
+        allPlaces = new ArrayList<>();
+        Place place1 = new Place(UUID.nameUUIDFromBytes("2".getBytes()), "a");
+        allPlaces.add(place1);
+        Place place2 = new Place(UUID.nameUUIDFromBytes("4".getBytes()), "b");
+        allPlaces.add(place2);
+        Place place3 = new Place(UUID.nameUUIDFromBytes("6".getBytes()), "c");
+        allPlaces.add(place3);
+        Place place4 = new Place(UUID.nameUUIDFromBytes("8".getBytes()), "d");
+        allPlaces.add(place4);
+        Place place5 = new Place(UUID.nameUUIDFromBytes("10".getBytes()), "e");
+        allPlaces.add(place5);
+        Place place6 = new Place(UUID.nameUUIDFromBytes("12".getBytes()), "f");
+        allPlaces.add(place6);
+        Place place7 = new Place(UUID.nameUUIDFromBytes("14".getBytes()), "g");
+        allPlaces.add(place7);
+        Place place8 = new Place(UUID.nameUUIDFromBytes("16".getBytes()), "h");
+        allPlaces.add(place8);
+        Place place9 = new Place(UUID.nameUUIDFromBytes("18".getBytes()), "i");
+        allPlaces.add(place9);
+        Place place10 = new Place(UUID.nameUUIDFromBytes("20".getBytes()), "j");
+        allPlaces.add(place10);
     }
 
     @Test public void testGetNearByPlaces() throws Exception {
@@ -36,29 +67,20 @@ public class NearbyPlaceFinderTest {
         filteredPlaces.add(place4);
         Place place5 = new Place(UUID.nameUUIDFromBytes("10".getBytes()), "e");
         filteredPlaces.add(place5);
-        Place place6 = new Place(UUID.nameUUIDFromBytes("12".getBytes()), "f");
-        filteredPlaces.add(place6);
-        Place place7 = new Place(UUID.nameUUIDFromBytes("14".getBytes()), "g");
-        filteredPlaces.add(place7);
-        Place place8 = new Place(UUID.nameUUIDFromBytes("16".getBytes()), "h");
-        filteredPlaces.add(place8);
-        Place place9 = new Place(UUID.nameUUIDFromBytes("18".getBytes()), "i");
-        filteredPlaces.add(place9);
-        Place place10 = new Place(UUID.nameUUIDFromBytes("20".getBytes()), "j");
-        filteredPlaces.add(place10);
 
-
-        context.checking(new Expectations(){
+        context.checking(new Expectations() {
             {
+                oneOf(locationBoundary).get(myLocation, DISTANCE_IN_KM);
+                will(returnValue(locationBoundaryBox));
                 oneOf(placeRepository).find();
-                will(returnValue(filteredPlaces));
+                will(returnValue(allPlaces));
+                oneOf(placeListPresenter).displayPlaceList(allPlaces);
             }
         });
 
-        nearbyPlacesFinderController = new NearbyPlacesFinderController(placeRepository);
-        Location myLocation = new Location(100,100);
+        NearbyPlacesFinderController nearbyPlacesFinderController =
+                new NearbyPlacesFinderController(locationBoundary, placeRepository, placeListPresenter);
+
         nearbyPlacesFinderController.findNearbyPlaces(myLocation);
-
-
     }
 }

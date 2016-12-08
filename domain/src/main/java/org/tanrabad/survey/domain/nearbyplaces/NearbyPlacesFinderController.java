@@ -1,6 +1,8 @@
 package org.tanrabad.survey.domain.nearbyplaces;
 
+import java.util.ArrayList;
 import java.util.List;
+import org.tanrabad.survey.domain.place.PlaceListPresenter;
 import org.tanrabad.survey.domain.place.PlaceRepository;
 import org.tanrabad.survey.entity.Place;
 import org.tanrabad.survey.entity.field.Location;
@@ -10,13 +12,26 @@ import org.tanrabad.survey.entity.field.Location;
  */
 
 public class NearbyPlacesFinderController {
+    private LocationBoundary locationBoundary;
     private PlaceRepository placeRepository;
+    private PlaceListPresenter placeListPresenter;
+    public static final int DISTANCE_IN_KM = 5;
 
-    public NearbyPlacesFinderController(PlaceRepository placeRepository) {
+    public NearbyPlacesFinderController(LocationBoundary locationBoundary, PlaceRepository placeRepository,
+            PlaceListPresenter placeListPresenter) {
+        this.locationBoundary = locationBoundary;
         this.placeRepository = placeRepository;
+        this.placeListPresenter = placeListPresenter;
     }
 
-    public List<Place> findNearbyPlaces(Location myLocation) {
-        return placeRepository.find();
+    public void findNearbyPlaces(Location myLocation) {
+        locationBoundary.get(myLocation, DISTANCE_IN_KM);
+        List<Place> places = placeRepository.find();
+
+        if (places != null) {
+            placeListPresenter.displayPlaceList(places);
+        } else {
+            placeListPresenter.displayPlaceNotFound();
+        }
     }
 }
