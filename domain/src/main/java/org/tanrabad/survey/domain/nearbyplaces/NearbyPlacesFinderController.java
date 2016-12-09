@@ -27,10 +27,22 @@ public class NearbyPlacesFinderController {
     }
 
     public void findNearbyPlaces(Location myLocation) {
-        LocationBound locationBound = locationBoundary.get(myLocation, DISTANCE_IN_KM);
         List<Place> places = placeRepository.find();
+
+        if (places == null) {
+            placeListPresenter.displayPlaceNotFound();
+            return;
+        }
+
+        LocationBound locationBound = locationBoundary.get(myLocation, DISTANCE_IN_KM);
         List<Place> placeWithoutLocation = nearbyPlacesFilter.findWithoutLocation(places);
         List<Place> placeInBoundary = nearbyPlacesFilter.findInBoundary(places, locationBound);
+
+        if (placeInBoundary == null) {
+            placeListPresenter.displayPlaceNotFound();
+            return;
+        }
+
         List<Place> sortedPlaceInBoundaryByDistance = nearbyPlacesFilter.sortDistance(placeInBoundary, myLocation);
         List<String> subdistrictOfPlaceInBoundary = nearbyPlacesFilter.groupingSubdistrictCode(placeInBoundary);
         List<Place> weightedPlaceWithoutLocation =
@@ -47,10 +59,6 @@ public class NearbyPlacesFinderController {
         List<Place> filteredPlace = nearbyPlacesFilter.mergeAndSortPlace(sortedPlaceInBoundaryByDistance,
                 weightFromCalculatedAverageLcsScore);
 
-        if (filteredPlace != null) {
-            placeListPresenter.displayPlaceList(filteredPlace);
-        } else {
-            placeListPresenter.displayPlaceNotFound();
-        }
+        placeListPresenter.displayPlaceList(filteredPlace);
     }
 }

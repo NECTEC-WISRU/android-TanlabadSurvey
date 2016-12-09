@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import org.jmock.Expectations;
+import org.jmock.Sequence;
 import org.jmock.auto.Mock;
 import org.jmock.integration.junit4.JUnitRuleMockery;
 import org.junit.Before;
@@ -103,38 +104,51 @@ public class NearbyPlaceFinderTest {
 
         final List<String> subdistrictCodeOfPlaceWithLocation = Arrays.asList("100101", "200101");
 
+        final Sequence sequence = context.sequence("find nearby place without location");
         context.checking(new Expectations() {
             {
-                oneOf(locationBoundary).get(myLocation, DISTANCE_IN_KM);
-                will(returnValue(locationBoundaryBox));
                 oneOf(placeRepository).find();
                 will(returnValue(allPlaces));
+                inSequence(sequence);
+                oneOf(locationBoundary).get(myLocation, DISTANCE_IN_KM);
+                will(returnValue(locationBoundaryBox));
+                inSequence(sequence);
                 oneOf(nearbyPlacesFilter).findWithoutLocation(allPlaces);
                 will(returnValue(placeWithoutLocation));
+                inSequence(sequence);
                 oneOf(nearbyPlacesFilter).findInBoundary(allPlaces, locationBoundaryBox);
                 will(returnValue(placeWithLocation));
+                inSequence(sequence);
                 oneOf(nearbyPlacesFilter).sortDistance(placeWithLocation, myLocation);
                 will(returnValue(sortedPlaceWithLocation));
+                inSequence(sequence);
                 oneOf(nearbyPlacesFilter).groupingSubdistrictCode(placeWithLocation);
                 will(returnValue(subdistrictCodeOfPlaceWithLocation));
+                inSequence(sequence);
                 oneOf(nearbyPlacesFilter).weightScoreForPlacesWithoutLocation(subdistrictCodeOfPlaceWithLocation,
                         placeWithoutLocation);
                 will(returnValue(placeWithoutLocation));
+                inSequence(sequence);
                 oneOf(nearbyPlacesFilter).trimCommonPlaceName(weightedPlaceWithoutLocation);
                 will(returnValue(trimmedPlaceNameWithoutLocation));
+                inSequence(sequence);
                 oneOf(nearbyPlacesFilter).trimCommonPlaceName(sortedPlaceWithLocation);
                 will(returnValue(trimmedPlaceNameWithLocation));
+                inSequence(sequence);
                 oneOf(nearbyPlacesFilter).findAverageLcsPercentageForPlaceWithoutLocation(
                         trimmedPlaceNameWithoutLocation,
                         trimmedPlaceNameWithLocation);
                 will(returnValue(weightedLcsPlaceWithoutLocation));
+                inSequence(sequence);
                 oneOf(nearbyPlacesFilter).addWeightFromCalculatedAverageLcsScore(weightedPlaceWithoutLocation,
                         weightedLcsPlaceWithoutLocation);
                 will(returnValue(weightedPlaceWithoutLocation));
+                inSequence(sequence);
                 oneOf(nearbyPlacesFilter).mergeAndSortPlace(sortedPlaceWithLocation, weightedPlaceWithoutLocation);
                 will(returnValue(filteredPlaces));
-
+                inSequence(sequence);
                 oneOf(placeListPresenter).displayPlaceList(filteredPlaces);
+                inSequence(sequence);
             }
         });
 
