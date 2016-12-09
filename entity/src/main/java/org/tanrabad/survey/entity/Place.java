@@ -20,8 +20,9 @@ package org.tanrabad.survey.entity;
 import org.tanrabad.survey.entity.field.Location;
 
 import java.util.UUID;
+import org.tanrabad.survey.entity.utils.WeightEntity;
 
-public class Place extends Entity implements LocationEntity, Comparable<Place> {
+public class Place extends Entity implements LocationEntity, WeightEntity, Comparable<Place> {
 
     private final UUID id;
     private String name;
@@ -30,6 +31,7 @@ public class Place extends Entity implements LocationEntity, Comparable<Place> {
     private Location location;
     private String subdistrictCode;
     private String updateBy;
+    private double weight;
 
     public Place(UUID id, String name) {
         super();
@@ -97,6 +99,14 @@ public class Place extends Entity implements LocationEntity, Comparable<Place> {
 
     public void setUpdateBy(String updateBy) {
         this.updateBy = updateBy;
+    }
+
+    @Override public void setWeight(double weight) {
+        this.weight = weight;
+    }
+
+    @Override public double getWeight() {
+        return weight;
     }
 
     @Override

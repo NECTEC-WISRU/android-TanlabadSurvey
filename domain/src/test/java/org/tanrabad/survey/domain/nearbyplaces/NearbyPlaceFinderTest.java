@@ -12,6 +12,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.tanrabad.survey.domain.place.PlaceListPresenter;
 import org.tanrabad.survey.domain.place.PlaceRepository;
+import org.tanrabad.survey.entity.LocationEntity;
 import org.tanrabad.survey.entity.Place;
 import org.tanrabad.survey.entity.field.Location;
 import org.tanrabad.survey.entity.field.LocationBound;
@@ -67,13 +68,16 @@ public class NearbyPlaceFinderTest {
         final List<Place> placeWithoutLocation = new ArrayList<>();
         placeWithoutLocation.add(place1);
 
-        final List<Place> placeWithLocation = new ArrayList<>();
+        final List<Place> weightedPlaceWithoutLocation = new ArrayList<>();
+        weightedPlaceWithoutLocation.add(place1);
+
+        final List<LocationEntity> placeWithLocation = new ArrayList<>();
         placeWithLocation.add(place2);
         placeWithLocation.add(place3);
         placeWithLocation.add(place4);
         placeWithLocation.add(place5);
 
-        final List<Place> sortedPlaceWithLocation = new ArrayList<>();
+        final List<LocationEntity> sortedPlaceWithLocation = new ArrayList<>();
         placeWithLocation.add(place3);
         placeWithLocation.add(place5);
         placeWithLocation.add(place2);
@@ -86,7 +90,7 @@ public class NearbyPlaceFinderTest {
         filteredPlaces.add(place4);
         filteredPlaces.add(place5);
 
-        final List<String> subdistrictCode = Arrays.asList("100101", "200101");
+        final List<String> subdistrictCodeOfPlaceWithLocation = Arrays.asList("100101", "200101");
 
         context.checking(new Expectations() {
             {
@@ -101,7 +105,10 @@ public class NearbyPlaceFinderTest {
                 oneOf(nearbyPlacesFilter).sortDistance(placeWithLocation, myLocation);
                 will(returnValue(sortedPlaceWithLocation));
                 oneOf(nearbyPlacesFilter).groupingSubdistrictCode(placeWithLocation);
-                will(returnValue(subdistrictCode));
+                will(returnValue(subdistrictCodeOfPlaceWithLocation));
+                oneOf(nearbyPlacesFilter).weightScoreForPlacesWithoutLocation(subdistrictCodeOfPlaceWithLocation,
+                        placeWithoutLocation);
+                will(returnValue(placeWithoutLocation));
                 oneOf(placeListPresenter).displayPlaceList(allPlaces);
             }
         });
