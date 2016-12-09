@@ -15,4 +15,6 @@ public interface NearbyPlacesFilter {
     List<Place> findInBoundary(List<Place> places, LocationBound locationBoundary);
 
     List<Place> sortDistance(List<Place> places, Location myLocation);
+
+    List<String> groupingSubdistrictCode(List<Place> places);
 }

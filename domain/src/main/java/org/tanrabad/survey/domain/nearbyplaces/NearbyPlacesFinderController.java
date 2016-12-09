@@ -32,7 +32,7 @@ public class NearbyPlacesFinderController {
         List<Place> placeWithoutLocation = nearbyPlacesFilter.findWithoutLocation(places);
         List<Place> placeInBoundary = nearbyPlacesFilter.findInBoundary(places, locationBound);
         List<Place> sortedPlaceInBoundaryByDistance = nearbyPlacesFilter.sortDistance(placeInBoundary, myLocation);
-
+        List<String> subdistrictOfPlaceInBoundary = nearbyPlacesFilter.groupingSubdistrictCode(placeInBoundary);
 
         if (places != null) {
             placeListPresenter.displayPlaceList(places);

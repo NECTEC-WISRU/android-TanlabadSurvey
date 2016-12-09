@@ -1,6 +1,7 @@
 package org.tanrabad.survey.domain.nearbyplaces;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import org.jmock.Expectations;
@@ -30,7 +31,7 @@ public class NearbyPlaceFinderTest {
 
     @Before public void setup() {
         myLocation = new Location(20, 20);
-        locationBoundaryBox = new LocationBound(new Location(10,10), new Location(10,10));
+        locationBoundaryBox = new LocationBound(new Location(10, 10), new Location(10, 10));
 
         allPlaces = new ArrayList<>();
         Place place1 = new Place(UUID.nameUUIDFromBytes("2".getBytes()), "a");
@@ -57,11 +58,11 @@ public class NearbyPlaceFinderTest {
 
     @Test public void testGetNearByPlaces() throws Exception {
 
-        Place place1 = new Place(UUID.nameUUIDFromBytes("2".getBytes()), "a");
-        Place place2 = new Place(UUID.nameUUIDFromBytes("4".getBytes()), "b");
-        Place place3 = new Place(UUID.nameUUIDFromBytes("6".getBytes()), "c");
-        Place place4 = new Place(UUID.nameUUIDFromBytes("8".getBytes()), "d");
-        Place place5 = new Place(UUID.nameUUIDFromBytes("10".getBytes()), "e");
+        final Place place1 = new Place(UUID.nameUUIDFromBytes("2".getBytes()), "a");
+        final Place place2 = new Place(UUID.nameUUIDFromBytes("4".getBytes()), "b");
+        final Place place3 = new Place(UUID.nameUUIDFromBytes("6".getBytes()), "c");
+        final Place place4 = new Place(UUID.nameUUIDFromBytes("8".getBytes()), "d");
+        final Place place5 = new Place(UUID.nameUUIDFromBytes("10".getBytes()), "e");
 
         final List<Place> placeWithoutLocation = new ArrayList<>();
         placeWithoutLocation.add(place1);
@@ -85,6 +86,8 @@ public class NearbyPlaceFinderTest {
         filteredPlaces.add(place4);
         filteredPlaces.add(place5);
 
+        final List<String> subdistrictCode = Arrays.asList("100101", "200101");
+
         context.checking(new Expectations() {
             {
                 oneOf(locationBoundary).get(myLocation, DISTANCE_IN_KM);
@@ -97,13 +100,15 @@ public class NearbyPlaceFinderTest {
                 will(returnValue(placeWithLocation));
                 oneOf(nearbyPlacesFilter).sortDistance(placeWithLocation, myLocation);
                 will(returnValue(sortedPlaceWithLocation));
+                oneOf(nearbyPlacesFilter).groupingSubdistrictCode(placeWithLocation);
+                will(returnValue(subdistrictCode));
                 oneOf(placeListPresenter).displayPlaceList(allPlaces);
-
             }
         });
 
         NearbyPlacesFinderController nearbyPlacesFinderController =
-                new NearbyPlacesFinderController(locationBoundary, placeRepository, placeListPresenter, nearbyPlacesFilter);
+                new NearbyPlacesFinderController(locationBoundary, placeRepository, placeListPresenter,
+                        nearbyPlacesFilter);
 
         nearbyPlacesFinderController.findNearbyPlaces(myLocation);
     }

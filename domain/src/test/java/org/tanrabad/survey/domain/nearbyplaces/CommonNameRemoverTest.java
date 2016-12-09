@@ -10,7 +10,7 @@ import static org.junit.Assert.assertEquals;
 
 public class CommonNameRemoverTest {
 
-    String[] commonPlaceTypes = {"โรงเรียน" ,"วัด", "หมู่"};
+    String[] commonPlaceTypes = { "โรงเรียน", "วัด", "หมู่" };
 
     @Test public void testRemoveCommonPlaceName() throws Exception {
 
@@ -19,14 +19,13 @@ public class CommonNameRemoverTest {
 
     String replaceCommonPlaceType(String placeName) {
         String trimmedPlaceName = placeName.trim();
-        for(String eachPlaceType : commonPlaceTypes) {
-            if(trimmedPlaceName.contains(eachPlaceType)) {
-                if(eachPlaceType.equals("หมู่")){
-                    return trimmedPlaceName.replaceAll("หมู่( \\d*)|หมู่บ้าน","").trim();
+        for (String eachPlaceType : commonPlaceTypes) {
+            if (trimmedPlaceName.contains(eachPlaceType)) {
+                if (eachPlaceType.equals("หมู่")) {
+                    return trimmedPlaceName.replaceAll("หมู่( \\d*)|หมู่บ้าน", "").trim();
                 }
                 return trimmedPlaceName.replace(eachPlaceType, "");
             }
-
         }
         return placeName;
     }
