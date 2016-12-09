@@ -91,6 +91,9 @@ public class NearbyPlaceFinderTest {
         trimmedPlaceNameWithLocation.add(place2);
         trimmedPlaceNameWithLocation.add(place4);
 
+        final List<Place> weightedLcsPlaceWithoutLocation = new ArrayList<>();
+        trimmedPlaceNameWithLocation.add(place1);
+
         final List<Place> filteredPlaces = new ArrayList<>();
         filteredPlaces.add(place1);
         filteredPlaces.add(place2);
@@ -121,7 +124,9 @@ public class NearbyPlaceFinderTest {
                 will(returnValue(trimmedPlaceNameWithoutLocation));
                 oneOf(nearbyPlacesFilter).trimCommonPlaceName(sortedPlaceWithLocation);
                 will(returnValue(trimmedPlaceNameWithLocation));
-
+                oneOf(nearbyPlacesFilter).findAverageLcsForPlaceWithoutLocation(trimmedPlaceNameWithoutLocation,
+                        trimmedPlaceNameWithLocation);
+                will(returnValue(weightedLcsPlaceWithoutLocation));
                 oneOf(placeListPresenter).displayPlaceList(allPlaces);
             }
         });

@@ -20,4 +20,6 @@ public interface NearbyPlacesFilter {
     List<Place> weightScoreForPlacesWithoutLocation(List<String> subdistrictCodes, List<Place> placeWithoutLocation);
 
     List<Place> trimCommonPlaceName(List<Place> places);
+
+    List<Place> findAverageLcsForPlaceWithoutLocation(List<Place> placesWithoutLocation, List<Place> placeWithLocation);
 }

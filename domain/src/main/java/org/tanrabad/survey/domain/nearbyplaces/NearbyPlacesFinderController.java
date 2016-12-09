@@ -38,6 +38,9 @@ public class NearbyPlacesFinderController {
                         placeWithoutLocation);
         List<Place> trimmedPlaceWithoutLocation = nearbyPlacesFilter.trimCommonPlaceName(weightedPlaceWithoutLocation);
         List<Place> trimmedPlaceInBoundary = nearbyPlacesFilter.trimCommonPlaceName(sortedPlaceInBoundaryByDistance);
+        List<Place> lcsForPlaceWithoutLocation =
+                nearbyPlacesFilter.findAverageLcsForPlaceWithoutLocation(trimmedPlaceWithoutLocation,
+                        trimmedPlaceInBoundary);
 
         if (places != null) {
             placeListPresenter.displayPlaceList(places);
