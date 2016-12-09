@@ -12,7 +12,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.tanrabad.survey.domain.place.PlaceListPresenter;
 import org.tanrabad.survey.domain.place.PlaceRepository;
-import org.tanrabad.survey.entity.LocationEntity;
 import org.tanrabad.survey.entity.Place;
 import org.tanrabad.survey.entity.field.Location;
 import org.tanrabad.survey.entity.field.LocationBound;
@@ -71,17 +70,26 @@ public class NearbyPlaceFinderTest {
         final List<Place> weightedPlaceWithoutLocation = new ArrayList<>();
         weightedPlaceWithoutLocation.add(place1);
 
-        final List<LocationEntity> placeWithLocation = new ArrayList<>();
+        final List<Place> placeWithLocation = new ArrayList<>();
         placeWithLocation.add(place2);
         placeWithLocation.add(place3);
         placeWithLocation.add(place4);
         placeWithLocation.add(place5);
 
-        final List<LocationEntity> sortedPlaceWithLocation = new ArrayList<>();
+        final List<Place> sortedPlaceWithLocation = new ArrayList<>();
         placeWithLocation.add(place3);
         placeWithLocation.add(place5);
         placeWithLocation.add(place2);
         placeWithLocation.add(place4);
+
+        final List<Place> trimmedPlaceNameWithoutLocation = new ArrayList<>();
+        trimmedPlaceNameWithoutLocation.add(place1);
+
+        final List<Place> trimmedPlaceNameWithLocation = new ArrayList<>();
+        trimmedPlaceNameWithLocation.add(place3);
+        trimmedPlaceNameWithLocation.add(place5);
+        trimmedPlaceNameWithLocation.add(place2);
+        trimmedPlaceNameWithLocation.add(place4);
 
         final List<Place> filteredPlaces = new ArrayList<>();
         filteredPlaces.add(place1);
@@ -109,6 +117,11 @@ public class NearbyPlaceFinderTest {
                 oneOf(nearbyPlacesFilter).weightScoreForPlacesWithoutLocation(subdistrictCodeOfPlaceWithLocation,
                         placeWithoutLocation);
                 will(returnValue(placeWithoutLocation));
+                oneOf(nearbyPlacesFilter).trimCommonPlaceName(weightedPlaceWithoutLocation);
+                will(returnValue(trimmedPlaceNameWithoutLocation));
+                oneOf(nearbyPlacesFilter).trimCommonPlaceName(sortedPlaceWithLocation);
+                will(returnValue(trimmedPlaceNameWithLocation));
+
                 oneOf(placeListPresenter).displayPlaceList(allPlaces);
             }
         });
