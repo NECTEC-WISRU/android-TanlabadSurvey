@@ -31,6 +31,8 @@ public class NearbyPlacesFinderController {
         List<Place> places = placeRepository.find();
         List<Place> placeWithoutLocation = nearbyPlacesFilter.findWithoutLocation(places);
         List<Place> placeInBoundary = nearbyPlacesFilter.findInBoundary(places, locationBound);
+        List<Place> sortedPlaceInBoundaryByDistance = nearbyPlacesFilter.sortDistance(placeInBoundary, myLocation);
+
 
         if (places != null) {
             placeListPresenter.displayPlaceList(places);

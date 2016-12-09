@@ -13,4 +13,6 @@ public interface NearbyPlacesFilter {
     List<Place> findWithoutLocation(List<Place> places);
 
     List<Place> findInBoundary(List<Place> places, LocationBound locationBoundary);
+
+    List<Place> sortDistance(List<Place> places, Location myLocation);
 }

@@ -95,6 +95,8 @@ public class NearbyPlaceFinderTest {
                 will(returnValue(placeWithoutLocation));
                 oneOf(nearbyPlacesFilter).findInBoundary(allPlaces, locationBoundaryBox);
                 will(returnValue(placeWithLocation));
+                oneOf(nearbyPlacesFilter).sortDistance(placeWithLocation, myLocation);
+                will(returnValue(sortedPlaceWithLocation));
                 oneOf(placeListPresenter).displayPlaceList(allPlaces);
 
             }
