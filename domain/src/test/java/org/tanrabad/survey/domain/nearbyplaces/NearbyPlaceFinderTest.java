@@ -1,6 +1,5 @@
 package org.tanrabad.survey.domain.nearbyplaces;
 
-import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -23,6 +22,7 @@ public class NearbyPlaceFinderTest {
     @Mock private PlaceRepository placeRepository;
     @Mock private LocationBoundary locationBoundary;
     @Mock private PlaceListPresenter placeListPresenter;
+    @Mock private NearbyPlacesFilter nearbyPlacesFilter;
     private Location myLocation;
 
     private LocationBound locationBoundaryBox;
@@ -56,16 +56,33 @@ public class NearbyPlaceFinderTest {
     }
 
     @Test public void testGetNearByPlaces() throws Exception {
-        final List<Place> filteredPlaces = new ArrayList<>();
+
         Place place1 = new Place(UUID.nameUUIDFromBytes("2".getBytes()), "a");
-        filteredPlaces.add(place1);
         Place place2 = new Place(UUID.nameUUIDFromBytes("4".getBytes()), "b");
-        filteredPlaces.add(place2);
         Place place3 = new Place(UUID.nameUUIDFromBytes("6".getBytes()), "c");
-        filteredPlaces.add(place3);
         Place place4 = new Place(UUID.nameUUIDFromBytes("8".getBytes()), "d");
-        filteredPlaces.add(place4);
         Place place5 = new Place(UUID.nameUUIDFromBytes("10".getBytes()), "e");
+
+        final List<Place> placeWithoutLocation = new ArrayList<>();
+        placeWithoutLocation.add(place1);
+
+        final List<Place> placeWithLocation = new ArrayList<>();
+        placeWithLocation.add(place2);
+        placeWithLocation.add(place3);
+        placeWithLocation.add(place4);
+        placeWithLocation.add(place5);
+
+        final List<Place> sortedPlaceWithLocation = new ArrayList<>();
+        placeWithLocation.add(place3);
+        placeWithLocation.add(place5);
+        placeWithLocation.add(place2);
+        placeWithLocation.add(place4);
+
+        final List<Place> filteredPlaces = new ArrayList<>();
+        filteredPlaces.add(place1);
+        filteredPlaces.add(place2);
+        filteredPlaces.add(place3);
+        filteredPlaces.add(place4);
         filteredPlaces.add(place5);
 
         context.checking(new Expectations() {
@@ -74,12 +91,17 @@ public class NearbyPlaceFinderTest {
                 will(returnValue(locationBoundaryBox));
                 oneOf(placeRepository).find();
                 will(returnValue(allPlaces));
+                oneOf(nearbyPlacesFilter).findWithoutLocation(allPlaces);
+                will(returnValue(placeWithoutLocation));
+                oneOf(nearbyPlacesFilter).findInBoundary(allPlaces, locationBoundaryBox);
+                will(returnValue(placeWithLocation));
                 oneOf(placeListPresenter).displayPlaceList(allPlaces);
+
             }
         });
 
         NearbyPlacesFinderController nearbyPlacesFinderController =
-                new NearbyPlacesFinderController(locationBoundary, placeRepository, placeListPresenter);
+                new NearbyPlacesFinderController(locationBoundary, placeRepository, placeListPresenter, nearbyPlacesFilter);
 
         nearbyPlacesFinderController.findNearbyPlaces(myLocation);
     }
