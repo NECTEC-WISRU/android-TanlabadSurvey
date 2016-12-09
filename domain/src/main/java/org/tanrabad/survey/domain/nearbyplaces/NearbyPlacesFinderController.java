@@ -7,10 +7,6 @@ import org.tanrabad.survey.entity.Place;
 import org.tanrabad.survey.entity.field.Location;
 import org.tanrabad.survey.entity.field.LocationBound;
 
-/**
- * Created by CHNCS23 on 6/12/2559.
- */
-
 public class NearbyPlacesFinderController {
     private static final int DISTANCE_IN_KM = 5;
     private LocationBoundary locationBoundary;

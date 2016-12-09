@@ -136,8 +136,7 @@ public class NearbyPlaceFinderTest {
                 will(returnValue(trimmedPlaceNameWithLocation));
                 inSequence(sequence);
                 oneOf(nearbyPlacesFilter).findAverageLcsPercentageForPlaceWithoutLocation(
-                        trimmedPlaceNameWithoutLocation,
-                        trimmedPlaceNameWithLocation);
+                        trimmedPlaceNameWithoutLocation, trimmedPlaceNameWithLocation);
                 will(returnValue(weightedLcsPlaceWithoutLocation));
                 inSequence(sequence);
                 oneOf(nearbyPlacesFilter).addWeightFromCalculatedAverageLcsScore(weightedPlaceWithoutLocation,

@@ -5,9 +5,6 @@ import org.tanrabad.survey.entity.Place;
 import org.tanrabad.survey.entity.field.Location;
 import org.tanrabad.survey.entity.field.LocationBound;
 
-/**
- * Created by CHNCS23 on 8/12/2559.
- */
 public interface NearbyPlacesFilter {
     List<Place> findWithoutLocation(List<Place> places);
 
