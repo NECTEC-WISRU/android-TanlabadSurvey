@@ -26,4 +26,6 @@ public interface NearbyPlacesFilter {
 
     List<Place> addWeightFromCalculatedAverageLcsScore(List<Place> weightedPlaceWithoutLocation,
             List<Place> averageLcsForPlaceWithoutLocation);
+
+    List<Place> mergeAndSortPlace(List<Place> placeWithLocation, List<Place> weightedPlaceWithoutLocation);
 }

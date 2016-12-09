@@ -41,11 +41,14 @@ public class NearbyPlacesFinderController {
         List<Place> averageLcsForPlaceWithoutLocation =
                 nearbyPlacesFilter.findAverageLcsPercentageForPlaceWithoutLocation(trimmedPlaceWithoutLocation,
                         trimmedPlaceInBoundary);
-        nearbyPlacesFilter.addWeightFromCalculatedAverageLcsScore(weightedPlaceWithoutLocation,
-                averageLcsForPlaceWithoutLocation);
+        List<Place> weightFromCalculatedAverageLcsScore =
+                nearbyPlacesFilter.addWeightFromCalculatedAverageLcsScore(weightedPlaceWithoutLocation,
+                        averageLcsForPlaceWithoutLocation);
+        List<Place> filteredPlace = nearbyPlacesFilter.mergeAndSortPlace(sortedPlaceInBoundaryByDistance,
+                weightFromCalculatedAverageLcsScore);
 
-        if (places != null) {
-            placeListPresenter.displayPlaceList(places);
+        if (filteredPlace != null) {
+            placeListPresenter.displayPlaceList(filteredPlace);
         } else {
             placeListPresenter.displayPlaceNotFound();
         }

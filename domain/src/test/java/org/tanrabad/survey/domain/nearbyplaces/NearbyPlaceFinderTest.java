@@ -131,8 +131,10 @@ public class NearbyPlaceFinderTest {
                 oneOf(nearbyPlacesFilter).addWeightFromCalculatedAverageLcsScore(weightedPlaceWithoutLocation,
                         weightedLcsPlaceWithoutLocation);
                 will(returnValue(weightedPlaceWithoutLocation));
+                oneOf(nearbyPlacesFilter).mergeAndSortPlace(sortedPlaceWithLocation, weightedPlaceWithoutLocation);
+                will(returnValue(filteredPlaces));
 
-                oneOf(placeListPresenter).displayPlaceList(allPlaces);
+                oneOf(placeListPresenter).displayPlaceList(filteredPlaces);
             }
         });
 
