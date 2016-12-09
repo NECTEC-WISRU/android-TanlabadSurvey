@@ -21,5 +21,9 @@ public interface NearbyPlacesFilter {
 
     List<Place> trimCommonPlaceName(List<Place> places);
 
-    List<Place> findAverageLcsForPlaceWithoutLocation(List<Place> placesWithoutLocation, List<Place> placeWithLocation);
+    List<Place> findAverageLcsPercentageForPlaceWithoutLocation(List<Place> placesWithoutLocation,
+            List<Place> placeWithLocation);
+
+    List<Place> addWeightFromCalculatedAverageLcsScore(List<Place> weightedPlaceWithoutLocation,
+            List<Place> averageLcsForPlaceWithoutLocation);
 }

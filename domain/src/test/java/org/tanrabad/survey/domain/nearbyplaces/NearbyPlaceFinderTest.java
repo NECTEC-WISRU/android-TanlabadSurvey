@@ -124,9 +124,14 @@ public class NearbyPlaceFinderTest {
                 will(returnValue(trimmedPlaceNameWithoutLocation));
                 oneOf(nearbyPlacesFilter).trimCommonPlaceName(sortedPlaceWithLocation);
                 will(returnValue(trimmedPlaceNameWithLocation));
-                oneOf(nearbyPlacesFilter).findAverageLcsForPlaceWithoutLocation(trimmedPlaceNameWithoutLocation,
+                oneOf(nearbyPlacesFilter).findAverageLcsPercentageForPlaceWithoutLocation(
+                        trimmedPlaceNameWithoutLocation,
                         trimmedPlaceNameWithLocation);
                 will(returnValue(weightedLcsPlaceWithoutLocation));
+                oneOf(nearbyPlacesFilter).addWeightFromCalculatedAverageLcsScore(weightedPlaceWithoutLocation,
+                        weightedLcsPlaceWithoutLocation);
+                will(returnValue(weightedPlaceWithoutLocation));
+
                 oneOf(placeListPresenter).displayPlaceList(allPlaces);
             }
         });
