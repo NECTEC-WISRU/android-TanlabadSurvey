@@ -17,9 +17,8 @@
 
 package org.tanrabad.survey.entity;
 
-import org.tanrabad.survey.entity.field.Location;
-
 import java.util.UUID;
+import org.tanrabad.survey.entity.field.Location;
 import org.tanrabad.survey.entity.utils.WeightEntity;
 
 public class Place extends Entity implements LocationEntity, WeightEntity, Comparable<Place> {
@@ -93,34 +92,23 @@ public class Place extends Entity implements LocationEntity, WeightEntity, Compa
         return updateBy;
     }
 
-    public void setUpdateBy(User updateBy) {
-        this.updateBy = updateBy.getUsername();
-    }
-
     public void setUpdateBy(String updateBy) {
         this.updateBy = updateBy;
     }
 
-    @Override public void setWeight(double weight) {
-        this.weight = weight;
+    public void setUpdateBy(User updateBy) {
+        this.updateBy = updateBy.getUsername();
     }
 
     @Override public double getWeight() {
         return weight;
     }
 
-    @Override
-    public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + name.hashCode();
-        result = 31 * result + type;
-        result = 31 * result + subType;
-        result = 31 * result + (location != null ? location.hashCode() : 0);
-        return result;
+    @Override public void setWeight(double weight) {
+        this.weight = weight;
     }
 
-    @Override
-    public boolean equals(Object o) {
+    @Override public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
@@ -128,21 +116,35 @@ public class Place extends Entity implements LocationEntity, WeightEntity, Compa
 
         if (type != place.type) return false;
         if (subType != place.subType) return false;
+        if (Double.compare(place.weight, weight) != 0) return false;
         if (!id.equals(place.id)) return false;
         if (!name.equals(place.name)) return false;
-        return !(location != null ? !location.equals(place.location) : place.location != null);
+        return subdistrictCode.equals(place.subdistrictCode);
     }
 
-    @Override
-    public String toString() {
-        return "Place{"
-                + "id=" + id
-                + ", name='" + name + '\''
-                + ", type=" + type
-                + ", subType=" + subType
-                + ", location=" + location
-                + ", subdistrictCode=" + subdistrictCode
-                + '}';
+    @Override public int hashCode() {
+        int result;
+        long temp;
+        result = id.hashCode();
+        result = 31 * result + name.hashCode();
+        result = 31 * result + type;
+        result = 31 * result + subType;
+        result = 31 * result + subdistrictCode.hashCode();
+        temp = Double.doubleToLongBits(weight);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        return result;
+    }
+
+    @Override public String toString() {
+        return "Place{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", type=" + type +
+                ", subType=" + subType +
+                ", location=" + location +
+                ", subdistrictCode='" + subdistrictCode + '\'' +
+                ", weight=" + weight +
+                '}';
     }
 
     @Override

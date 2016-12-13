@@ -44,4 +44,53 @@ public class PlaceUtilsTest {
 
         assertNull(PlaceUtils.getPlacesWithoutLocation(places));
     }
+
+    @Test public void grouppingSubdistrictCodeTest() throws Exception {
+        Place place1 = new Place(UUID.nameUUIDFromBytes("10".getBytes()), "aa");
+        place1.setSubdistrictCode("100101");
+        Place place2 = new Place(UUID.nameUUIDFromBytes("12".getBytes()), "bb");
+        place2.setSubdistrictCode("100201");
+        Place place3 = new Place(UUID.nameUUIDFromBytes("14".getBytes()), "cc");
+        place3.setSubdistrictCode("100101");
+
+        List<Place> places = new ArrayList<>();
+        places.add(place1);
+        places.add(place2);
+        places.add(place3);
+
+        List<String> groupingSubdistrictCode = new ArrayList<>();
+        groupingSubdistrictCode.add("100101");
+        groupingSubdistrictCode.add("100201");
+
+        assertEquals(groupingSubdistrictCode, PlaceUtils.groupingSubdistict(places));
+    }
+
+    @Test public void setWeightOfPlaceWithoutLocationTest() throws Exception {
+        Place place1 = new Place(UUID.nameUUIDFromBytes("10".getBytes()), "aa");
+        place1.setSubdistrictCode("100101");
+        Place place2 = new Place(UUID.nameUUIDFromBytes("12".getBytes()), "bb");
+        place2.setSubdistrictCode("100201");
+        Place place3 = new Place(UUID.nameUUIDFromBytes("14".getBytes()), "cc");
+        place3.setSubdistrictCode("100101");
+        Place place4 = new Place(UUID.nameUUIDFromBytes("16".getBytes()), "dd");
+        place4.setSubdistrictCode("100105");
+
+        List<Place> placesWithoutLocation = new ArrayList<>();
+        placesWithoutLocation.add(place1);
+        placesWithoutLocation.add(place2);
+        placesWithoutLocation.add(place3);
+        placesWithoutLocation.add(place4);
+
+        List<Place> filterPlaceWithoutLocationInsideSubdistrict = new ArrayList<>();
+        filterPlaceWithoutLocationInsideSubdistrict.add(place1);
+        filterPlaceWithoutLocationInsideSubdistrict.add(place2);
+        filterPlaceWithoutLocationInsideSubdistrict.add(place3);
+
+        List<String> groupingSubdistrictCode = new ArrayList<>();
+        groupingSubdistrictCode.add("100101");
+        groupingSubdistrictCode.add("100201");
+
+        assertEquals(filterPlaceWithoutLocationInsideSubdistrict,
+                PlaceUtils.findPlacesWithoutLocationInsideSubdistrict(groupingSubdistrictCode, placesWithoutLocation));
+    }
 }
