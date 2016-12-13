@@ -2,59 +2,39 @@ package org.tanrabad.survey.domain.nearbyplaces;
 
 import java.util.List;
 import org.tanrabad.survey.domain.place.PlaceListPresenter;
-import org.tanrabad.survey.domain.place.PlaceRepository;
 import org.tanrabad.survey.entity.Place;
 import org.tanrabad.survey.entity.field.Location;
-import org.tanrabad.survey.entity.field.LocationBound;
 
 public class NearbyPlacesFinderController {
-    private static final int DISTANCE_IN_KM = 5;
-    private LocationBoundary locationBoundary;
-    private PlaceRepository placeRepository;
+    private NearbyPlacesWithLocation nearbyPlacesWithLocation;
+    private NearbyPlacesWithoutLocation nearbyPlacesWithoutLocation;
+    private MergeAndSortNearbyPlaces mergeAndSortNearbyPlaces;
     private PlaceListPresenter placeListPresenter;
-    private NearbyPlacesFilter nearbyPlacesFilter;
 
-    public NearbyPlacesFinderController(LocationBoundary locationBoundary, PlaceRepository placeRepository,
-            PlaceListPresenter placeListPresenter, NearbyPlacesFilter nearbyPlacesFilter) {
-        this.locationBoundary = locationBoundary;
-        this.placeRepository = placeRepository;
+    public NearbyPlacesFinderController(NearbyPlacesWithLocation nearbyPlacesWithLocation,
+            NearbyPlacesWithoutLocation nearbyPlacesWithoutLocation, MergeAndSortNearbyPlaces mergeAndSortNearbyPlaces,
+            PlaceListPresenter placeListPresenter) {
+        this.nearbyPlacesWithLocation = nearbyPlacesWithLocation;
+        this.nearbyPlacesWithoutLocation = nearbyPlacesWithoutLocation;
+        this.mergeAndSortNearbyPlaces = mergeAndSortNearbyPlaces;
         this.placeListPresenter = placeListPresenter;
-        this.nearbyPlacesFilter = nearbyPlacesFilter;
     }
 
     public void findNearbyPlaces(Location myLocation) {
-        List<Place> places = placeRepository.find();
+        List<Place> placeWithLocation = nearbyPlacesWithLocation.getPlaces(myLocation);
 
-        if (places == null) {
+        if (placeWithLocation == null) {
             placeListPresenter.displayPlaceNotFound();
             return;
         }
 
-        LocationBound locationBound = locationBoundary.get(myLocation, DISTANCE_IN_KM);
-        List<Place> placeWithoutLocation = nearbyPlacesFilter.findWithoutLocation(places);
-        List<Place> placeInBoundary = nearbyPlacesFilter.findInBoundary(places, locationBound);
+        List<Place> placeWithoutLocation = nearbyPlacesWithoutLocation.getPlaces(placeWithLocation);
 
-        if (placeInBoundary == null) {
-            placeListPresenter.displayPlaceNotFound();
-            return;
+        if (placeWithoutLocation == null) {
+            placeListPresenter.displayPlaceList(placeWithLocation);
+        } else {
+            List<Place> nearByPlaces = mergeAndSortNearbyPlaces.mergeAndSort(placeWithLocation, placeWithoutLocation);
+            placeListPresenter.displayPlaceList(nearByPlaces);
         }
-
-        List<Place> sortedPlaceInBoundaryByDistance = nearbyPlacesFilter.sortDistance(placeInBoundary, myLocation);
-        List<String> subdistrictOfPlaceInBoundary = nearbyPlacesFilter.groupingSubdistrictCode(placeInBoundary);
-        List<Place> weightedPlaceWithoutLocation =
-                nearbyPlacesFilter.weightScoreForPlacesWithoutLocation(subdistrictOfPlaceInBoundary,
-                        placeWithoutLocation);
-        List<Place> trimmedPlaceWithoutLocation = nearbyPlacesFilter.trimCommonPlaceName(weightedPlaceWithoutLocation);
-        List<Place> trimmedPlaceInBoundary = nearbyPlacesFilter.trimCommonPlaceName(sortedPlaceInBoundaryByDistance);
-        List<Place> averageLcsForPlaceWithoutLocation =
-                nearbyPlacesFilter.findAverageLcsPercentageForPlaceWithoutLocation(trimmedPlaceWithoutLocation,
-                        trimmedPlaceInBoundary);
-        List<Place> weightFromCalculatedAverageLcsScore =
-                nearbyPlacesFilter.addWeightFromCalculatedAverageLcsScore(weightedPlaceWithoutLocation,
-                        averageLcsForPlaceWithoutLocation);
-        List<Place> filteredPlace = nearbyPlacesFilter.mergeAndSortPlace(sortedPlaceInBoundaryByDistance,
-                weightFromCalculatedAverageLcsScore);
-
-        placeListPresenter.displayPlaceList(filteredPlace);
     }
 }
