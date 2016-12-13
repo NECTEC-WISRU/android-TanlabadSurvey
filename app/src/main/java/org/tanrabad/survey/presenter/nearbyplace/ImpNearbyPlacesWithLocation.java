@@ -1,6 +1,7 @@
 package org.tanrabad.survey.presenter.nearbyplace;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import org.tanrabad.survey.domain.nearbyplaces.LocationBoundary;
 import org.tanrabad.survey.domain.nearbyplaces.NearbyPlacesWithLocation;
@@ -20,12 +21,15 @@ public class ImpNearbyPlacesWithLocation implements NearbyPlacesWithLocation {
         this.locationBoundary = locationBoundary;
     }
 
-    @Override public List<Place> getPlaces(Location myLocation) {
+    @Override public List<Place> getPlaces(final Location myLocation) {
         List<Place> places = placeRepository.find();
 
         if (places == null || places.isEmpty()) return null;
 
-        return getPlaceInsideLocationBoundary(places, locationBoundary.get(myLocation, DISTANCE_IN_KM));
+        List<Place> placeInsideLocationBoundary =
+                getPlaceInsideLocationBoundary(places, locationBoundary.get(myLocation, DISTANCE_IN_KM));
+        Collections.sort(placeInsideLocationBoundary, new PlaceDistanceComparator(myLocation));
+        return placeInsideLocationBoundary;
     }
 
     private List<Place> getPlaceInsideLocationBoundary(List<Place> places, LocationBound locationBoundary) {
@@ -40,6 +44,6 @@ public class ImpNearbyPlacesWithLocation implements NearbyPlacesWithLocation {
                 placeInsideLocation.add(eachPlace);
             }
         }
-        return placeInsideLocation.isEmpty() ? null : placeInsideLocation;
+        return placeInsideLocation;
     }
 }
