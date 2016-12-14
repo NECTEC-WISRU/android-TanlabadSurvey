@@ -20,9 +20,8 @@ public class ImpNearbyPlacesWithoutLocation implements NearbyPlacesWithoutLocati
 
     @Override public List<Place> getPlaces(List<Place> placeWithLocation) {
         List<Place> places = placeRepository.find();
-        List<String> grouppingSubdistrict = PlaceUtils.groupingSubdistict(places);
         List<Place> placesWithoutLocationInsideSubdistrict =
-                PlaceUtils.findPlacesWithoutLocationInsideSubdistrict(grouppingSubdistrict,
+                PlaceUtils.findPlacesWithoutLocationInsideSubdistrict(PlaceUtils.groupingSubdistict(places),
                         PlaceUtils.getPlacesWithoutLocation(places));
 
         return null;
