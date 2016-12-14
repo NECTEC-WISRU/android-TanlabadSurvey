@@ -15,4 +15,12 @@ public class CommonPlaceTypeRemoverTest {
     @Test public void testRemoveSchoolName() throws Exception {
         assertEquals("วัดบางไผ่", CommonPlaceTypeRemover.remove("โรงเรียนวัดบางไผ่"));
     }
+
+    @Test public void testRemoveSchoolNameWithPunctuation() throws Exception {
+        assertEquals("บางปะอินราชานุเคราะห์๑", CommonPlaceTypeRemover.remove("โรงเรียนบางปะอิน \"ราชานุเคราะห์ ๑\""));
+    }
+
+    @Test public void testRemovePunctuation() throws Exception {
+        assertEquals("ทดสอบ", CommonPlaceTypeRemover.remove("วัดท @ด!สอ*บ& "));
+    }
 }
