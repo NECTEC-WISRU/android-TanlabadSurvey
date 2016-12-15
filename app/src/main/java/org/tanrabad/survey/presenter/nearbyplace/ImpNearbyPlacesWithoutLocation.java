@@ -1,14 +1,13 @@
 package org.tanrabad.survey.presenter.nearbyplace;
 
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import org.tanrabad.survey.domain.nearbyplaces.NearbyPlacesWithoutLocation;
 import org.tanrabad.survey.domain.place.PlaceRepository;
 import org.tanrabad.survey.entity.Place;
 import org.tanrabad.survey.utils.place.PlaceUtils;
-
-/**
- * Created by CHNCS23 on 13/12/2559.
- */
+import org.tanrabad.survey.utils.place.WeightPlaceWithoutLocation;
 
 public class ImpNearbyPlacesWithoutLocation implements NearbyPlacesWithoutLocation {
 
@@ -23,7 +22,11 @@ public class ImpNearbyPlacesWithoutLocation implements NearbyPlacesWithoutLocati
         List<Place> placesWithoutLocationInsideSubdistrict =
                 PlaceUtils.findPlacesWithoutLocationInsideSubdistrict(PlaceUtils.groupingSubdistict(places),
                         PlaceUtils.getPlacesWithoutLocation(places));
-
-        return null;
+        Map<UUID, Double> weightPlaceWithoutPlantationScore =
+                WeightPlaceWithoutLocation.calculate(placeWithLocation, placesWithoutLocationInsideSubdistrict);
+        for (Place place : placesWithoutLocationInsideSubdistrict) {
+            place.setWeight(weightPlaceWithoutPlantationScore.get(place.getId()));
+        }
+        return placesWithoutLocationInsideSubdistrict;
     }
 }
