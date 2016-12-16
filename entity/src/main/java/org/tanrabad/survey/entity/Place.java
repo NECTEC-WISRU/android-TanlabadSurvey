@@ -136,15 +136,15 @@ public class Place extends Entity implements LocationEntity, WeightEntity, Compa
     }
 
     @Override public String toString() {
-        return "Place{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", type=" + type +
-                ", subType=" + subType +
-                ", location=" + location +
-                ", subdistrictCode='" + subdistrictCode + '\'' +
-                ", weight=" + weight +
-                '}';
+        return "Place{"
+                + "id=" + id
+                + ", name='" + name + '\''
+                + ", type=" + type
+                + ", subType=" + subType
+                + ", location=" + location
+                + ", subdistrictCode='" + subdistrictCode + '\''
+                + ", weight=" + weight
+                + '}';
     }
 
     @Override
