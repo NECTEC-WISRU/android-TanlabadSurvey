@@ -92,12 +92,12 @@ public class Place extends Entity implements LocationEntity, WeightEntity, Compa
         return updateBy;
     }
 
-    public void setUpdateBy(String updateBy) {
-        this.updateBy = updateBy;
-    }
-
     public void setUpdateBy(User updateBy) {
         this.updateBy = updateBy.getUsername();
+    }
+
+    public void setUpdateBy(String updateBy) {
+        this.updateBy = updateBy;
     }
 
     @Override public double getWeight() {
@@ -119,7 +119,7 @@ public class Place extends Entity implements LocationEntity, WeightEntity, Compa
         if (Double.compare(place.weight, weight) != 0) return false;
         if (!id.equals(place.id)) return false;
         if (!name.equals(place.name)) return false;
-        return subdistrictCode.equals(place.subdistrictCode);
+        return subdistrictCode != null ? subdistrictCode.equals(place.subdistrictCode) : place.subdistrictCode == null;
     }
 
     @Override public int hashCode() {
@@ -129,7 +129,7 @@ public class Place extends Entity implements LocationEntity, WeightEntity, Compa
         result = 31 * result + name.hashCode();
         result = 31 * result + type;
         result = 31 * result + subType;
-        result = 31 * result + subdistrictCode.hashCode();
+        result = 31 * result + (subdistrictCode != null ? subdistrictCode.hashCode() : 0);
         temp = Double.doubleToLongBits(weight);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         return result;

@@ -15,6 +15,6 @@ public class ImpLcsMatchPercentageCalculatorTest {
         LongestCommonSubsequence lcs = new LongestCommonSubsequence();
         LcsMatchPercentageCalculator lcsMatchPercentageCalculator = new ImpLcsMatchPercentageCalculator();
         assertEquals(0.89473684,
-                lcsMatchPercentageCalculator.calculate(lcs.length(tuHospital, tuSchool), tuHospital.length()));
+                lcsMatchPercentageCalculator.calculate(lcs.length(tuHospital, tuSchool), tuHospital.length()), 1);
     }
 }
