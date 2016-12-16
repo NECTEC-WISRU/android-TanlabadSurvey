@@ -27,7 +27,7 @@ import org.tanrabad.survey.R;
 class PlacePagerAdapter extends FragmentPagerAdapter {
 
     private final PlaceListInDatabaseFragment placeListInDatabaseFragment;
-    private final PlaceSurveyListFragment placeSurveyListFragment;
+    private final PlaceNearbyListFragment placeNearbyListFragment;
     private Context context;
 
     public PlacePagerAdapter(FragmentManager fm, Context context, String username) {
@@ -35,7 +35,7 @@ class PlacePagerAdapter extends FragmentPagerAdapter {
         this.context = context;
 
         placeListInDatabaseFragment = PlaceListInDatabaseFragment.newInstance();
-        placeSurveyListFragment = PlaceSurveyListFragment.newInstance(username);
+        placeNearbyListFragment = PlaceNearbyListFragment.newInstance();
     }
 
     @Override
@@ -49,7 +49,7 @@ class PlacePagerAdapter extends FragmentPagerAdapter {
             case 0:
                 return context.getResources().getString(R.string.find_place_by_database);
             case 1:
-                return context.getResources().getString(R.string.find_place_by_recent_survey);
+                return context.getResources().getString(R.string.nearby_places);
             default:
                 return null;
         }
@@ -61,7 +61,7 @@ class PlacePagerAdapter extends FragmentPagerAdapter {
             case 0:
                 return placeListInDatabaseFragment;
             case 1:
-                return placeSurveyListFragment;
+                return placeNearbyListFragment;
             default:
                 return null;
         }

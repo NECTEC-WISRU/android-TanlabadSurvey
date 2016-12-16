@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import org.junit.Test;
-import org.tanrabad.survey.domain.geographic.FilterBoundaryCalculate;
-import org.tanrabad.survey.domain.nearbyplaces.LocationBoundary;
 import org.tanrabad.survey.domain.nearbyplaces.MergeAndSortNearbyPlaces;
 import org.tanrabad.survey.domain.nearbyplaces.NearbyPlacesFinderController;
 import org.tanrabad.survey.domain.nearbyplaces.NearbyPlacesWithLocation;
@@ -14,7 +12,6 @@ import org.tanrabad.survey.domain.place.PlaceListPresenter;
 import org.tanrabad.survey.domain.place.PlaceRepository;
 import org.tanrabad.survey.entity.Place;
 import org.tanrabad.survey.entity.field.Location;
-import org.tanrabad.survey.entity.field.LocationBound;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
@@ -106,14 +103,7 @@ public class NearbyPlaceTest {
         when(placeRepository.find()).thenReturn(allPlaces);
 
         NearbyPlacesWithLocation nearbyPlacesWithLocation =
-                new ImpNearbyPlacesWithLocation(placeRepository, new LocationBoundary() {
-                    @Override public LocationBound get(Location location, int distance) {
-                        FilterBoundaryCalculate filterBoundaryCalculate = new FilterBoundaryCalculate();
-                        Location minLocation = filterBoundaryCalculate.getMinLocation(location, distance);
-                        Location maxLocation = filterBoundaryCalculate.getMaxLocation(location, distance);
-                        return new LocationBound(minLocation, maxLocation);
-                    }
-                });
+                new ImpNearbyPlacesWithLocation(placeRepository, new ImpLocationBoundary());
 
         NearbyPlacesWithoutLocation nearbyPlacesWithoutLocation = new ImpNearbyPlacesWithoutLocation(placeRepository);
         MergeAndSortNearbyPlaces mergeAndSortNearbyPlaces = new ImpMergeAndSortNearbyPlaces();
