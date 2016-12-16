@@ -17,13 +17,14 @@ public class WeightPlaceWithoutLocationTest {
         tuHospital.setLocation(new Location(5, 5));
         Place tuRangsit = new Place(UUID.nameUUIDFromBytes("2".getBytes()), "มหาวิทยาลัยธรรมศาสตร์ (ศูนย์รังสิต)");
         tuHospital.setLocation(new Location(4, 4));
-        Place tuKindergarten = new Place(UUID.nameUUIDFromBytes("3".getBytes()), "โรงเรียนประถมศึกษาธรรมศาสตร์");
-        Place bangkokUniversity =
-                new Place(UUID.nameUUIDFromBytes("4".getBytes()), "มหาวิทยาลัยกรุุงเทพ (วิทยาเขตรังสิต");
 
         List<Place> placeWithLocation = new ArrayList<>();
         placeWithLocation.add(tuHospital);
         placeWithLocation.add(tuRangsit);
+
+        Place tuKindergarten = new Place(UUID.nameUUIDFromBytes("3".getBytes()), "โรงเรียนประถมศึกษาธรรมศาสตร์");
+        Place bangkokUniversity =
+                new Place(UUID.nameUUIDFromBytes("4".getBytes()), "มหาวิทยาลัยกรุุงเทพ (วิทยาเขตรังสิต");
 
         List<Place> placeWithoutLocation = new ArrayList<>();
         placeWithoutLocation.add(tuKindergarten);

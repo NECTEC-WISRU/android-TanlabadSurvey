@@ -12,7 +12,6 @@ import static org.junit.Assert.assertEquals;
 
 public class PlaceDistanceComparatorTest {
     @Test public void compareFromNearToFarTest() throws Exception {
-        Location centerLocation = new Location(14.0811245, 100.6083875);
         Place place1 = new Place(UUID.nameUUIDFromBytes("2".getBytes()), "Valayalongkorn Rajabhat University");
         place1.setLocation(new Location(14.133843, 100.613192));
         Place place2 = new Place(UUID.nameUUIDFromBytes("4".getBytes()), "Bangkok University");
@@ -29,6 +28,7 @@ public class PlaceDistanceComparatorTest {
         sortedPlace.add(place1);
         sortedPlace.add(place3);
 
+        Location centerLocation = new Location(14.0811245, 100.6083875);
         Collections.sort(rawPlace, new PlaceDistanceComparator(centerLocation));
         assertEquals(sortedPlace, rawPlace);
     }
