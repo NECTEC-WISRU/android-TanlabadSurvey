@@ -124,13 +124,12 @@ public class Place extends Entity implements LocationEntity, WeightEntity, Compa
 
     @Override public int hashCode() {
         int result;
-        long temp;
         result = id.hashCode();
         result = 31 * result + name.hashCode();
         result = 31 * result + type;
         result = 31 * result + subType;
         result = 31 * result + (subdistrictCode != null ? subdistrictCode.hashCode() : 0);
-        temp = Double.doubleToLongBits(weight);
+        long temp = Double.doubleToLongBits(weight);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         return result;
     }
