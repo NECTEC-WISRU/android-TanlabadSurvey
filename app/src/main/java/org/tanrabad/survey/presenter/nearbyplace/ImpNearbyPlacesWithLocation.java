@@ -29,7 +29,7 @@ public class ImpNearbyPlacesWithLocation implements NearbyPlacesWithLocation {
         List<Place> placeInsideLocationBoundary =
                 getPlaceInsideLocationBoundary(places, locationBoundary.get(myLocation, DISTANCE_IN_KM));
         Collections.sort(placeInsideLocationBoundary, new PlaceDistanceComparator(myLocation));
-        return placeInsideLocationBoundary;
+        return placeInsideLocationBoundary.isEmpty() ? null : placeInsideLocationBoundary;
     }
 
     private List<Place> getPlaceInsideLocationBoundary(List<Place> places, LocationBound locationBoundary) {

@@ -44,8 +44,8 @@ import static org.mockito.Mockito.when;
         places.add(place3);
 
         List<Place> filteredPlace = new ArrayList<>();
-        filteredPlace.add(place1);
         filteredPlace.add(place2);
+        filteredPlace.add(place1);
 
         when(placeRepository.find()).thenReturn(places);
         when(locationBoundary.get(myLocation, 5)).thenReturn(locationBound);
