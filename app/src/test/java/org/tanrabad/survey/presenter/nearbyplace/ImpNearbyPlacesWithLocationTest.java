@@ -18,7 +18,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class) public class ImpNearbyPlacesWithLocationTest {
+@RunWith(MockitoJUnitRunner.class)
+public class ImpNearbyPlacesWithLocationTest {
     @Mock PlaceRepository placeRepository;
     @Mock LocationBoundary locationBoundary;
     private ImpNearbyPlacesWithLocation impNearbyPlacesWithLocation;
