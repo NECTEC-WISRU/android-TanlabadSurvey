@@ -11,23 +11,23 @@ import org.tanrabad.survey.entity.Place;
 public class WeightPlaceWithoutLocation {
     public static Map<UUID, Double> calculate(List<Place> placeWithLocation, List<Place> placeWithoutLocation) {
         Map<UUID, Double> weightedScoreOfPlaceWithoutLocation = new HashMap<>();
-        removeCommonPlaceName(placeWithLocation);
-        removeCommonPlaceName(placeWithoutLocation);
+        Map<UUID, String> trimmedPlaceNameWithLocation = removeCommonPlaceName(placeWithLocation);
+        Map<UUID, String> trimmedPlaceNameWithoutLocation = removeCommonPlaceName(placeWithoutLocation);
         LongestCommonSubsequence lcs = new LongestCommonSubsequence();
         LcsMatchPercentageCalculator lcsMatchPercentageCalculator = new ImpLcsMatchPercentageCalculator();
-        for (Place eachPlaceWithLocation : placeWithLocation) {
-            for (Place eachPlaceWithoutLocation : placeWithoutLocation) {
-                String placeWithLocationName = eachPlaceWithLocation.getName();
+        for (Map.Entry<UUID, String> placeNameWithLocationEntry : trimmedPlaceNameWithLocation.entrySet()) {
+            for (Map.Entry<UUID, String> placeNameWithoutLocationEntry : trimmedPlaceNameWithoutLocation.entrySet()) {
+                String placeWithLocationName = placeNameWithLocationEntry.getValue();
                 int lcsLengthOfPlaceWithoutLocation =
-                        lcs.length(placeWithLocationName, eachPlaceWithoutLocation.getName());
+                        lcs.length(placeWithLocationName, placeNameWithoutLocationEntry.getValue());
                 double lcsWeightPercentage = lcsMatchPercentageCalculator.calculate(lcsLengthOfPlaceWithoutLocation,
                         placeWithLocationName.length());
 
-                if (weightedScoreOfPlaceWithoutLocation.containsKey(eachPlaceWithoutLocation.getId())) {
-                    Double oldWeight = weightedScoreOfPlaceWithoutLocation.get(eachPlaceWithoutLocation.getId());
+                if (weightedScoreOfPlaceWithoutLocation.containsKey(placeNameWithoutLocationEntry.getKey())) {
+                    Double oldWeight = weightedScoreOfPlaceWithoutLocation.get(placeNameWithoutLocationEntry.getKey());
                     lcsWeightPercentage += oldWeight;
                 }
-                weightedScoreOfPlaceWithoutLocation.put(eachPlaceWithoutLocation.getId(), lcsWeightPercentage);
+                weightedScoreOfPlaceWithoutLocation.put(placeNameWithoutLocationEntry.getKey(), lcsWeightPercentage);
             }
         }
 
@@ -44,9 +44,11 @@ public class WeightPlaceWithoutLocation {
         }
     }
 
-    private static void removeCommonPlaceName(List<Place> places) {
+    private static Map<UUID, String> removeCommonPlaceName(List<Place> places) {
+        Map<UUID, String> removeCommonPlaceNameMap = new HashMap<>();
         for (Place place : places) {
-            place.setName(CommonPlaceTypeRemover.remove(place.getName()));
+            removeCommonPlaceNameMap.put(place.getId(), CommonPlaceTypeRemover.remove(place.getName()));
         }
+        return removeCommonPlaceNameMap;
     }
 }

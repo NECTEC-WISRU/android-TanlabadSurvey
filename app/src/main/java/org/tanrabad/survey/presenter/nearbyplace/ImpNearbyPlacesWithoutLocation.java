@@ -19,9 +19,13 @@ public class ImpNearbyPlacesWithoutLocation implements NearbyPlacesWithoutLocati
 
     @Override public List<Place> getPlaces(List<Place> placeWithLocation) {
         List<Place> places = placeRepository.find();
+
+        List<Place> placesWithoutLocation = PlaceUtils.getPlacesWithoutLocation(places);
+        if (placesWithoutLocation == null) return null;
+
         List<Place> placesWithoutLocationInsideSubdistrict =
-                PlaceUtils.findPlacesWithoutLocationInsideSubdistrict(PlaceUtils.groupingSubdistict(places),
-                        PlaceUtils.getPlacesWithoutLocation(places));
+                PlaceUtils.findPlacesWithoutLocationInsideSubdistrict(PlaceUtils.groupingSubdistict(placeWithLocation),
+                        placesWithoutLocation);
         Map<UUID, Double> weightPlaceWithoutPlantationScore =
                 WeightPlaceWithoutLocation.calculate(placeWithLocation, placesWithoutLocationInsideSubdistrict);
         for (Place place : placesWithoutLocationInsideSubdistrict) {
