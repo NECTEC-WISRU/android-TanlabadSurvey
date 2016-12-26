@@ -60,7 +60,7 @@ public class PlaceNearbyListFragment extends Fragment
         implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, PlaceListPresenter {
 
     public static final int LOCATION_PERMISSION_REQUEST_CODE = 888;
-    private PlaceAdapter placeAdapter;
+    private NearbyPlaceAdapter nearbyPlaceAdapter;
     NearbyPlacesWithLocation nearbyPlacesWithLocation =
             new ImpNearbyPlacesWithLocation(BrokerPlaceRepository.getInstance(), new ImpLocationBoundary());
     NearbyPlacesWithoutLocation nearbyPlacesWithoutLocation =
@@ -87,6 +87,7 @@ public class PlaceNearbyListFragment extends Fragment
 
         }
     };
+    private Location currentLocation;
 
     @Override public void onStart() {
         super.onStart();
@@ -112,26 +113,27 @@ public class PlaceNearbyListFragment extends Fragment
     }
 
     @Override public void displayPlaceList(List<Place> places) {
-        placeAdapter.updateData(places);
+        nearbyPlaceAdapter.setLocation(currentLocation);
+        nearbyPlaceAdapter.updateData(places);
         placeCountView.setText(getString(R.string.format_place_count, places.size()));
         placeCountView.setVisibility(View.VISIBLE);
         emptyPlacesView.hide();
     }
 
     @Override public void displayPlaceNotFound() {
-        placeAdapter.clearData();
+        nearbyPlaceAdapter.clearData();
         placeCountView.setVisibility(View.GONE);
         emptyPlacesView.showEmptyLayout();
     }
 
     protected void loadPlaceList(android.location.Location location) {
         emptyPlacesView.showProgressBar();
-        Location currentLocation = new Location(location.getLatitude(), location.getLongitude());
+        currentLocation = new Location(location.getLatitude(), location.getLongitude());
         nearbyPlacesFinderController.findNearbyPlaces(currentLocation);
     }
 
     @Override public void onItemClick(AdapterView<?> adapterView, View view, final int position, long l) {
-        final Place placeData = placeAdapter.getItem(position);
+        final Place placeData = nearbyPlaceAdapter.getItem(position);
         PromptMessage promptMessage = new AlertDialogPromptMessage(getActivity());
         promptMessage.setOnConfirm(getString(R.string.survey), new PromptMessage.OnConfirmListener() {
             @Override public void onConfirm() {
@@ -140,7 +142,7 @@ public class PlaceNearbyListFragment extends Fragment
             }
         });
         promptMessage.setOnCancel(getString(R.string.cancel), null);
-        promptMessage.show(getString(R.string.start_survey), placeAdapter.getItem(position).getName());
+        promptMessage.show(getString(R.string.start_survey), nearbyPlaceAdapter.getItem(position).getName());
     }
 
     @Override public boolean onItemLongClick(AdapterView<?> adapterView, View view, final int position, long l) {
@@ -210,10 +212,10 @@ public class PlaceNearbyListFragment extends Fragment
     }
 
     private void setupPlaceList() {
-        placeAdapter = new PlaceAdapter(getActivity());
-        placeAdapter.setOnItemClickListener(this);
-        placeAdapter.setOnItemLongClickListener(this);
-        placeListView.setAdapter(placeAdapter);
+        nearbyPlaceAdapter = new NearbyPlaceAdapter(getActivity());
+        nearbyPlaceAdapter.setOnItemClickListener(this);
+        nearbyPlaceAdapter.setOnItemLongClickListener(this);
+        placeListView.setAdapter(nearbyPlaceAdapter);
         placeListView.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
         LinearLayoutManager linearLayoutManager =
                 new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
