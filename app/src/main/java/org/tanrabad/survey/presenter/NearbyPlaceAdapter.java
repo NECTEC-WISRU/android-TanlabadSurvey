@@ -33,6 +33,7 @@ import org.tanrabad.survey.domain.geographic.EllipsoidDistance;
 import org.tanrabad.survey.entity.Place;
 import org.tanrabad.survey.entity.field.Location;
 import org.tanrabad.survey.repository.BrokerPlaceSubTypeRepository;
+import org.tanrabad.survey.utils.android.ResourceUtils;
 import th.or.nectec.thai.widget.address.AddressPicker;
 
 public class NearbyPlaceAdapter extends RecyclerView.Adapter<NearbyPlaceAdapter.ViewHolder>
@@ -89,7 +90,8 @@ public class NearbyPlaceAdapter extends RecyclerView.Adapter<NearbyPlaceAdapter.
                 BrokerPlaceSubTypeRepository.getInstance().findById(place.getSubType()).getName());
         holder.placeAddressTextView.setAddressCode(place.getSubdistrictCode());
         holder.placeIcon.setImageResource(PlaceIconMapping.getPlaceIcon(place));
-        holder.placeHaveLocationIcon.setVisibility(place.getLocation() == null ? View.GONE : View.VISIBLE);
+        holder.placeTextView.setCompoundDrawablesWithIntrinsicBounds(null, null, place.getLocation() == null ? null
+                : ResourceUtils.from(context).getDrawable(R.drawable.ic_place_have_location), null);
         if (location != null && place.getLocation() != null) {
             holder.placeDistanceTextView.setVisibility(View.VISIBLE);
             holder.placeDistanceTextView.setText(String.format("%s กม.",
@@ -127,7 +129,6 @@ public class NearbyPlaceAdapter extends RecyclerView.Adapter<NearbyPlaceAdapter.
         private TextView placeDistanceTextView;
         private AddressPicker placeAddressTextView;
         private ImageView placeIcon;
-        private ImageView placeHaveLocationIcon;
         private NearbyPlaceAdapter adapter;
 
         public ViewHolder(View itemView, NearbyPlaceAdapter adapter) {
@@ -140,7 +141,6 @@ public class NearbyPlaceAdapter extends RecyclerView.Adapter<NearbyPlaceAdapter.
             placeDistanceTextView = (TextView) itemView.findViewById(R.id.place_distance);
             placeAddressTextView = (AddressPicker) itemView.findViewById(R.id.place_address);
             placeIcon = (ImageView) itemView.findViewById(R.id.place_icon);
-            placeHaveLocationIcon = (ImageView) itemView.findViewById(R.id.place_have_location_icon);
         }
 
         @Override public void onClick(View view) {
