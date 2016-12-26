@@ -1,8 +1,10 @@
 package org.tanrabad.survey.utils.place;
 
 public class CommonPlaceTypeRemover {
-    public static final String[] COMMON_PLACE_TYPES =
-            { "โรงเรียน", "วัด", "หมู่", "โรงพยาบาล", "รพ.สต.", "มหาวิทยาลัย", "สถานีตำรวจ", "สถานีรถไฟ" };
+    public static final String[] COMMON_PLACE_TYPES = {
+            "โรงเรียน", "วัด", "หมู่", "โรงพยาบาล", "รพ.สต.", "มหาวิทยาลัย", "สถานีตำรวจ", "สถานีรถไฟ", "ชุมชน", "สภ.",
+            "สน.", "รพ.", "หมู่บ้าน", "โรงแรม", "โบสถ์"
+    };
 
     public static String remove(String placeName) {
         String trimmedPlaceName = placeName.trim();
