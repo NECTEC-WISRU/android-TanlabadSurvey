@@ -1,4 +1,4 @@
-package org.tanrabad.survey.utils.place;
+package org.tanrabad.survey.nearby;
 
 import java.util.ArrayList;
 import java.util.List;

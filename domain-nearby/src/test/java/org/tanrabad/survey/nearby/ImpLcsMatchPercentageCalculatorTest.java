@@ -1,4 +1,4 @@
-package org.tanrabad.survey.utils.place;
+package org.tanrabad.survey.nearby;
 
 import info.debatty.java.stringsimilarity.LongestCommonSubsequence;
 import org.junit.Test;
