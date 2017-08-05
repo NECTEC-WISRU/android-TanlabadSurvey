@@ -1,9 +1,5 @@
 package org.tanrabad.survey.entity.field;
 
-/**
- * Created by CHNCS23 on 8/12/2559.
- */
-
 public class LocationBound {
     private Location minimumLocation;
     private Location maximumLocation;
@@ -17,15 +13,23 @@ public class LocationBound {
         return minimumLocation;
     }
 
-    public void setMinimumLocation(Location minimumLocation) {
-        this.minimumLocation = minimumLocation;
-    }
-
     public Location getMaximumLocation() {
         return maximumLocation;
     }
 
-    public void setMaximumLocation(Location maximumLocation) {
-        this.maximumLocation = maximumLocation;
+    @Override public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        LocationBound that = (LocationBound) o;
+
+        if (!minimumLocation.equals(that.minimumLocation)) return false;
+        return maximumLocation.equals(that.maximumLocation);
+    }
+
+    @Override public int hashCode() {
+        int result = minimumLocation.hashCode();
+        result = 31 * result + maximumLocation.hashCode();
+        return result;
     }
 }
