@@ -1,7 +1,7 @@
 package org.tanrabad.survey.presenter.nearbyplace;
 
 import java.util.Comparator;
-import org.tanrabad.survey.domain.geographic.EllipsoidDistance;
+import org.tanrabad.survey.domain.geographic.distance.EllipsoidDistance;
 import org.tanrabad.survey.entity.Place;
 import org.tanrabad.survey.entity.field.Location;
 

@@ -29,7 +29,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import org.tanrabad.survey.R;
-import org.tanrabad.survey.domain.geographic.EllipsoidDistance;
+import org.tanrabad.survey.domain.geographic.distance.EllipsoidDistance;
 import org.tanrabad.survey.entity.Place;
 import org.tanrabad.survey.entity.field.Location;
 import org.tanrabad.survey.repository.BrokerPlaceSubTypeRepository;

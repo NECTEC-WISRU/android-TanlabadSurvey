@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.tanrabad.survey.domain.geographic;
+package org.tanrabad.survey.domain.geographic.distance;
 
 import org.tanrabad.survey.entity.field.Location;
 

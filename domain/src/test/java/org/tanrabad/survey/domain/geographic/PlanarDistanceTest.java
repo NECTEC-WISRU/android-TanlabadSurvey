@@ -19,6 +19,7 @@ package org.tanrabad.survey.domain.geographic;
 
 import org.junit.Test;
 
+import org.tanrabad.survey.domain.geographic.distance.PlanarDistance;
 import org.tanrabad.survey.entity.field.Location;
 
 import static org.junit.Assert.assertEquals;

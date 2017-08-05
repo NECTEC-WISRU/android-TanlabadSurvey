@@ -7,6 +7,7 @@ import org.junit.runners.Parameterized;
 import java.util.Arrays;
 import java.util.Collection;
 
+import org.tanrabad.survey.domain.geographic.distance.EllipsoidDistance;
 import org.tanrabad.survey.entity.field.Location;
 
 import static org.junit.Assert.assertEquals;

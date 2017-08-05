@@ -24,8 +24,6 @@ import org.tanrabad.survey.entity.field.Location;
 
 interface LocationRepository {
 
-    List<LocationEntity> findInBoundaryLocation(Location minimumLocation, Location maximumLocation);
-
     List<LocationEntity> findTrimmedInBoundaryLocation(
             Location insideMinimumLocation, Location outsideMinimumLocation,
             Location insideMaximumLocation, Location outsideMaximumLocation);
