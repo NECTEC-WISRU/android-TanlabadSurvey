@@ -1,5 +1,5 @@
 /*
- * Copyright (c)  2015  NECTEC
+ * Copyright (c) 2015 NECTEC
  *   National Electronics and Computer Technology Center, Thailand
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,4 +15,10 @@
  * limitations under the License.
  */
 
-include ':app', ':entity', ':domain', ':domain-nearby'
+package org.tanrabad.survey.nearby.distance;
+
+import org.tanrabad.survey.entity.field.Location;
+
+interface DistanceCalculator {
+    double calculate(Location currentLocation, Location targetLocation);
+}

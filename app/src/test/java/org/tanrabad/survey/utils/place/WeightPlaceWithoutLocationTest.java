@@ -8,6 +8,7 @@ import java.util.UUID;
 import org.junit.Test;
 import org.tanrabad.survey.entity.Place;
 import org.tanrabad.survey.entity.field.Location;
+import org.tanrabad.survey.nearby.WeightPlaceWithoutLocation;
 
 import static org.junit.Assert.assertEquals;
 

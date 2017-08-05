@@ -1,6 +1,7 @@
 package org.tanrabad.survey.utils.place;
 
 import org.junit.Test;
+import org.tanrabad.survey.nearby.CommonPlaceTypeRemover;
 
 import static org.junit.Assert.assertEquals;
 

@@ -38,17 +38,17 @@ import com.google.android.gms.location.LocationListener;
 import java.util.List;
 import org.tanrabad.survey.R;
 import org.tanrabad.survey.TanrabadApp;
-import org.tanrabad.survey.domain.nearbyplaces.MergeAndSortNearbyPlaces;
-import org.tanrabad.survey.domain.nearbyplaces.NearbyPlacesFinderController;
-import org.tanrabad.survey.domain.nearbyplaces.NearbyPlacesWithLocation;
-import org.tanrabad.survey.domain.nearbyplaces.NearbyPlacesWithoutLocation;
-import org.tanrabad.survey.domain.place.PlaceListPresenter;
 import org.tanrabad.survey.entity.Place;
 import org.tanrabad.survey.entity.field.Location;
-import org.tanrabad.survey.presenter.nearbyplace.ImpLocationBoundary;
-import org.tanrabad.survey.presenter.nearbyplace.ImpMergeAndSortNearbyPlaces;
-import org.tanrabad.survey.presenter.nearbyplace.ImpNearbyPlacesWithLocation;
-import org.tanrabad.survey.presenter.nearbyplace.ImpNearbyPlacesWithoutLocation;
+import org.tanrabad.survey.nearby.ImpLocationBoundary;
+import org.tanrabad.survey.nearby.ImpMergeAndSortNearbyPlaces;
+import org.tanrabad.survey.nearby.ImpNearbyPlacesWithLocation;
+import org.tanrabad.survey.nearby.ImpNearbyPlacesWithoutLocation;
+import org.tanrabad.survey.nearby.MergeAndSortNearbyPlaces;
+import org.tanrabad.survey.nearby.NearbyPlacePresenter;
+import org.tanrabad.survey.nearby.NearbyPlacesFinderController;
+import org.tanrabad.survey.nearby.NearbyPlacesWithLocation;
+import org.tanrabad.survey.nearby.NearbyPlacesWithoutLocation;
 import org.tanrabad.survey.presenter.view.EmptyLayoutView;
 import org.tanrabad.survey.repository.BrokerPlaceRepository;
 import org.tanrabad.survey.utils.GpsUtils;
@@ -57,15 +57,12 @@ import org.tanrabad.survey.utils.prompt.AlertDialogPromptMessage;
 import org.tanrabad.survey.utils.prompt.PromptMessage;
 
 public class PlaceNearbyListFragment extends Fragment
-        implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, PlaceListPresenter {
+        implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
+    NearbyPlacePresenter {
 
     public static final int LOCATION_PERMISSION_REQUEST_CODE = 888;
     private NearbyPlaceAdapter nearbyPlaceAdapter;
-    NearbyPlacesWithLocation nearbyPlacesWithLocation =
-            new ImpNearbyPlacesWithLocation(BrokerPlaceRepository.getInstance(), new ImpLocationBoundary());
-    NearbyPlacesWithoutLocation nearbyPlacesWithoutLocation =
-            new ImpNearbyPlacesWithoutLocation(BrokerPlaceRepository.getInstance());
-    MergeAndSortNearbyPlaces mergeAndSortNearbyPlaces = new ImpMergeAndSortNearbyPlaces();
+
     private TextView placeCountView;
     private RecyclerView placeListView;
     private RecyclerViewHeader placeListHeader;
@@ -112,18 +109,18 @@ public class PlaceNearbyListFragment extends Fragment
         return fragment;
     }
 
-    @Override public void displayPlaceList(List<Place> places) {
+    @Override public void displayPlaceNotFound() {
+        nearbyPlaceAdapter.clearData();
+        placeCountView.setVisibility(View.GONE);
+        emptyPlacesView.showEmptyLayout();
+    }
+
+    @Override public void displayNearbyPlaces(List<Place> places) {
         nearbyPlaceAdapter.setLocation(currentLocation);
         nearbyPlaceAdapter.updateData(places);
         placeCountView.setText(getString(R.string.format_place_count, places.size()));
         placeCountView.setVisibility(View.VISIBLE);
         emptyPlacesView.hide();
-    }
-
-    @Override public void displayPlaceNotFound() {
-        nearbyPlaceAdapter.clearData();
-        placeCountView.setVisibility(View.GONE);
-        emptyPlacesView.showEmptyLayout();
     }
 
     protected void loadPlaceList(android.location.Location location) {
@@ -161,6 +158,11 @@ public class PlaceNearbyListFragment extends Fragment
 
     @Override public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        NearbyPlacesWithLocation nearbyPlacesWithLocation =
+            new ImpNearbyPlacesWithLocation(BrokerPlaceRepository.getInstance().find(), new ImpLocationBoundary());
+        NearbyPlacesWithoutLocation nearbyPlacesWithoutLocation =
+            new ImpNearbyPlacesWithoutLocation(BrokerPlaceRepository.getInstance().find());
+        MergeAndSortNearbyPlaces mergeAndSortNearbyPlaces = new ImpMergeAndSortNearbyPlaces();
         nearbyPlacesFinderController =
                 new NearbyPlacesFinderController(nearbyPlacesWithLocation, nearbyPlacesWithoutLocation,
                         mergeAndSortNearbyPlaces, this);

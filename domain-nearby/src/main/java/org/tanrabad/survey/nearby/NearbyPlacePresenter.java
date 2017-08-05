@@ -1,5 +1,5 @@
 /*
- * Copyright (c)  2015  NECTEC
+ * Copyright (c) 2015 NECTEC
  *   National Electronics and Computer Technology Center, Thailand
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,4 +15,15 @@
  * limitations under the License.
  */
 
-include ':app', ':entity', ':domain', ':domain-nearby'
+package org.tanrabad.survey.nearby;
+
+import java.util.List;
+
+import org.tanrabad.survey.entity.LocationEntity;
+import org.tanrabad.survey.entity.Place;
+
+public interface NearbyPlacePresenter {
+    void displayPlaceNotFound();
+
+    void displayNearbyPlaces(List<Place> placeFilter);
+}

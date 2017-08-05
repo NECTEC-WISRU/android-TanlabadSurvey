@@ -2,7 +2,8 @@ package org.tanrabad.survey.utils.place;
 
 import info.debatty.java.stringsimilarity.LongestCommonSubsequence;
 import org.junit.Test;
-import org.tanrabad.survey.domain.nearbyplaces.LcsMatchPercentageCalculator;
+import org.tanrabad.survey.nearby.ImpLcsMatchPercentageCalculator;
+import org.tanrabad.survey.nearby.LcsMatchPercentageCalculator;
 
 import static org.junit.Assert.assertEquals;
 

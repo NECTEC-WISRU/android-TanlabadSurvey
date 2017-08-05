@@ -1,5 +1,5 @@
 /*
- * Copyright (c)  2015  NECTEC
+ * Copyright (c) 2015 NECTEC
  *   National Electronics and Computer Technology Center, Thailand
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,4 +15,11 @@
  * limitations under the License.
  */
 
-include ':app', ':entity', ':domain', ':domain-nearby'
+package org.tanrabad.survey.nearby;
+
+import org.tanrabad.survey.entity.field.Location;
+
+interface FilterBoundaryCalculator {
+    Location getMinLocation(Location currentLocation, double distanceInKm);
+    Location getMaxLocation(Location currentLocation, double distanceInKm);
+}
