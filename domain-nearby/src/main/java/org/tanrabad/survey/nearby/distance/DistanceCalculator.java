@@ -19,6 +19,6 @@ package org.tanrabad.survey.nearby.distance;
 
 import org.tanrabad.survey.entity.field.Location;
 
-interface DistanceCalculator {
+public interface DistanceCalculator {
     double calculate(Location currentLocation, Location targetLocation);
 }

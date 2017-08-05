@@ -29,6 +29,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import org.tanrabad.survey.R;
+import org.tanrabad.survey.nearby.distance.DistanceCalculator;
 import org.tanrabad.survey.nearby.distance.EllipsoidDistance;
 import org.tanrabad.survey.entity.Place;
 import org.tanrabad.survey.entity.field.Location;
@@ -45,7 +46,7 @@ public class NearbyPlaceAdapter extends RecyclerView.Adapter<NearbyPlaceAdapter.
     private AdapterView.OnItemClickListener onItemClickListener;
     private AdapterView.OnItemLongClickListener onItemLongClickListener;
     private Location location;
-    private EllipsoidDistance ellipsoidDistance = new EllipsoidDistance();
+    private DistanceCalculator ellipsoidDistance = new EllipsoidDistance();
     private DecimalFormat decimalFormat = new DecimalFormat("#.##");
 
     public NearbyPlaceAdapter(Context context) {
