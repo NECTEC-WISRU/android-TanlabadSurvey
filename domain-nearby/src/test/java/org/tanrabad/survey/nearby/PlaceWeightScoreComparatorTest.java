@@ -6,41 +6,47 @@ import java.util.List;
 import java.util.UUID;
 import org.junit.Test;
 import org.tanrabad.survey.entity.Place;
-import org.tanrabad.survey.nearby.PlaceWeightScoreComparator;
 
 import static org.junit.Assert.assertEquals;
 
 public class PlaceWeightScoreComparatorTest {
+
+    private final Place โรงเรียนประถมศึกษาธรรมศาสตร์ =
+        new Place(UUID.randomUUID(), "โรงเรียนประถมศึกษาธรรมศาสตร์");
+    private final Place มหาวิทยาลัยกรุุงเทพ =
+        new Place(UUID.randomUUID(), "มหาวิทยาลัยกรุุงเทพ (วิทยาเขตรังสิต)");
+    private final Place โรงเรียนบางปะอิน =
+        new Place(UUID.randomUUID(), "โรงเรียนบางปะอิน ราชานุเคราะห์ ๑");
+    private final Place วัดโพธิ์นิ่ม =
+        new Place(UUID.randomUUID(), "วัดโพธิ์นิ่ม");
+    private final Place วัดนิเวศธรรมประวัติ =
+        new Place(UUID.randomUUID(), "วัดนิเวศธรรมประวัติ");
+    private final Place โรงเรียนศาลาพัน =
+        new Place(UUID.randomUUID(), "โรงเรียนศาลาพัน");
+
     @Test public void compare() throws Exception {
-        Place tuKindergarten = new Place(UUID.nameUUIDFromBytes("3".getBytes()), "โรงเรียนประถมศึกษาธรรมศาสตร์");
-        tuKindergarten.setWeight(0.4);
-        Place bangkokUniversity =
-                new Place(UUID.nameUUIDFromBytes("4".getBytes()), "มหาวิทยาลัยกรุุงเทพ (วิทยาเขตรังสิต)");
-        bangkokUniversity.setWeight(0.5);
-        Place racha1School = new Place(UUID.nameUUIDFromBytes("4".getBytes()), "โรงเรียนบางปะอิน \"ราชานุเคราะห์ ๑\"");
-        racha1School.setWeight(0.8);
-        Place watPhonim = new Place(UUID.nameUUIDFromBytes("4".getBytes()), "วัดโพธิ์นิ่ม");
-        watPhonim.setWeight(0.2);
-        Place watNivetdhammaprawat = new Place(UUID.nameUUIDFromBytes("4".getBytes()), "วัดนิเวศธรรมประวัติ");
-        watNivetdhammaprawat.setWeight(0.1);
-        Place salapanSchool = new Place(UUID.nameUUIDFromBytes("4".getBytes()), "โรงเรียนศาลาพัน");
-        salapanSchool.setWeight(0.9);
+        โรงเรียนประถมศึกษาธรรมศาสตร์.setWeight(0.4);
+        มหาวิทยาลัยกรุุงเทพ.setWeight(0.5);
+        โรงเรียนบางปะอิน.setWeight(0.8);
+        วัดโพธิ์นิ่ม.setWeight(0.2);
+        วัดนิเวศธรรมประวัติ.setWeight(0.1);
+        โรงเรียนศาลาพัน.setWeight(0.9);
 
         List<Place> places = new ArrayList<>();
-        places.add(tuKindergarten);
-        places.add(bangkokUniversity);
-        places.add(racha1School);
-        places.add(watPhonim);
-        places.add(watNivetdhammaprawat);
-        places.add(salapanSchool);
+        places.add(โรงเรียนประถมศึกษาธรรมศาสตร์);
+        places.add(มหาวิทยาลัยกรุุงเทพ);
+        places.add(โรงเรียนบางปะอิน);
+        places.add(วัดโพธิ์นิ่ม);
+        places.add(วัดนิเวศธรรมประวัติ);
+        places.add(โรงเรียนศาลาพัน);
 
         List<Place> sortedPlaces = new ArrayList<>();
-        sortedPlaces.add(salapanSchool);
-        sortedPlaces.add(racha1School);
-        sortedPlaces.add(bangkokUniversity);
-        sortedPlaces.add(tuKindergarten);
-        sortedPlaces.add(watPhonim);
-        sortedPlaces.add(watNivetdhammaprawat);
+        sortedPlaces.add(โรงเรียนศาลาพัน);
+        sortedPlaces.add(โรงเรียนบางปะอิน);
+        sortedPlaces.add(มหาวิทยาลัยกรุุงเทพ);
+        sortedPlaces.add(โรงเรียนประถมศึกษาธรรมศาสตร์);
+        sortedPlaces.add(วัดโพธิ์นิ่ม);
+        sortedPlaces.add(วัดนิเวศธรรมประวัติ);
 
         Collections.sort(places, new PlaceWeightScoreComparator());
         assertEquals(sortedPlaces, places);
