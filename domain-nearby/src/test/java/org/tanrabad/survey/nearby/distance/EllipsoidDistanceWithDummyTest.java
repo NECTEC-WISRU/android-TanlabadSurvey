@@ -1,46 +1,32 @@
-/*
- * Copyright (c) 2016 NECTEC
- *   National Electronics and Computer Technology Center, Thailand
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-package org.tanrabad.survey.nearby;
+package org.tanrabad.survey.nearby.distance;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.tanrabad.survey.nearby.distance.SphereDistance;
-import org.tanrabad.survey.entity.field.Location;
 
 import java.util.Arrays;
 import java.util.Collection;
 
+import org.tanrabad.survey.nearby.distance.EllipsoidDistance;
+import org.tanrabad.survey.entity.field.Location;
+
 import static org.junit.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
-public class SphereDistanceWithDummyTest {
+public class EllipsoidDistanceWithDummyTest {
 
     private static final double DELTA = 0.5;
 
-    private final SphereDistance sphereDistance = new SphereDistance();
+    private final EllipsoidDistance ellipsoidDistance = new EllipsoidDistance();
 
     private final Location startLocation = new Location(40.6892, -74.0444);
     private final Location destinationLocation;
     private final double distanceBetweenPoint;
     private final boolean expectValue;
 
-    public SphereDistanceWithDummyTest(Location destinationLocation, double distanceBetweenPoint, boolean expectValue) {
+    public EllipsoidDistanceWithDummyTest(Location destinationLocation,
+                                          double distanceBetweenPoint,
+                                          boolean expectValue) {
         this.destinationLocation = destinationLocation;
         this.distanceBetweenPoint = distanceBetweenPoint;
         this.expectValue = expectValue;
@@ -118,14 +104,13 @@ public class SphereDistanceWithDummyTest {
     }
 
     @Test
-    public void testDistanceCalculateSphere() throws Exception {
-
-        assertEquals(distanceBetweenPoint, sphereDistance.calculate(startLocation, destinationLocation), DELTA);
+    public void testDistanceCalculateEllipsoid() throws Exception {
+        assertEquals(distanceBetweenPoint, ellipsoidDistance.calculate(startLocation, destinationLocation), DELTA);
     }
 
     @Test
     public void testCheckIsDistanceInCoverageArea100Km() throws Exception {
-        final boolean expectResult = sphereDistance.calculate(startLocation, destinationLocation) <= 100;
+        final boolean expectResult = ellipsoidDistance.calculate(startLocation, destinationLocation) <= 100;
 
         assertEquals(expectResult, expectValue);
     }

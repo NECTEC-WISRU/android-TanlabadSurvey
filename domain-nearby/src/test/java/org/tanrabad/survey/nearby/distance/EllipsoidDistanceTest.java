@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.tanrabad.survey.nearby;
+package org.tanrabad.survey.nearby.distance;
 
 import org.junit.Test;
 

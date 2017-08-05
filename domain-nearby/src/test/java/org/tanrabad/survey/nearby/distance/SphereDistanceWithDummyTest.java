@@ -15,12 +15,12 @@
  * limitations under the License.
  */
 
-package org.tanrabad.survey.nearby;
+package org.tanrabad.survey.nearby.distance;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.tanrabad.survey.nearby.distance.PlanarDistance;
+import org.tanrabad.survey.nearby.distance.SphereDistance;
 import org.tanrabad.survey.entity.field.Location;
 
 import java.util.Arrays;
@@ -29,18 +29,18 @@ import java.util.Collection;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
-public class PlanarDistanceWithDummyTest {
+public class SphereDistanceWithDummyTest {
 
     private static final double DELTA = 0.5;
 
-    private final PlanarDistance planarDistance = new PlanarDistance();
+    private final SphereDistance sphereDistance = new SphereDistance();
 
     private final Location startLocation = new Location(40.6892, -74.0444);
     private final Location destinationLocation;
     private final double distanceBetweenPoint;
     private final boolean expectValue;
 
-    public PlanarDistanceWithDummyTest(Location destinationLocation, double distanceBetweenPoint, boolean expectValue) {
+    public SphereDistanceWithDummyTest(Location destinationLocation, double distanceBetweenPoint, boolean expectValue) {
         this.destinationLocation = destinationLocation;
         this.distanceBetweenPoint = distanceBetweenPoint;
         this.expectValue = expectValue;
@@ -118,18 +118,15 @@ public class PlanarDistanceWithDummyTest {
     }
 
     @Test
-    public void testDistanceCalculatePlanar() throws Exception {
+    public void testDistanceCalculateSphere() throws Exception {
 
-        //Location destinationLocation = new Location(39.7802, -74.9453);
-
-        assertEquals(distanceBetweenPoint, planarDistance.calculate(startLocation, destinationLocation), DELTA);
+        assertEquals(distanceBetweenPoint, sphereDistance.calculate(startLocation, destinationLocation), DELTA);
     }
 
     @Test
     public void testCheckIsDistanceInCoverageArea100Km() throws Exception {
-        final boolean expectResult = planarDistance.calculate(startLocation, destinationLocation) <= 100;
+        final boolean expectResult = sphereDistance.calculate(startLocation, destinationLocation) <= 100;
 
         assertEquals(expectResult, expectValue);
     }
 }
-

@@ -15,27 +15,26 @@
  * limitations under the License.
  */
 
-package org.tanrabad.survey.nearby;
+package org.tanrabad.survey.nearby.distance;
 
 import org.junit.Test;
 
-import org.tanrabad.survey.nearby.distance.SphereDistance;
+import org.tanrabad.survey.nearby.distance.PlanarDistance;
 import org.tanrabad.survey.entity.field.Location;
 
 import static org.junit.Assert.assertEquals;
 
-public class SphereDistanceTest {
+public class PlanarDistanceTest {
 
     private static final int DELTA = 5;
 
     @Test
-    public void testCalculateBetweenPoint() throws Exception {
+    public void testDistanceCalculatePlanar() throws Exception {
         Location startLocation = new Location(40.6892, -74.0444);
         Location destinationLocation = new Location(39.7802, -74.9453);
 
-        SphereDistance sphereDistance = new SphereDistance();
+        PlanarDistance planarDistance = new PlanarDistance();
 
-
-        assertEquals(125, sphereDistance.calculate(startLocation, destinationLocation), DELTA);
+        assertEquals(125, planarDistance.calculate(startLocation, destinationLocation), DELTA);
     }
 }
