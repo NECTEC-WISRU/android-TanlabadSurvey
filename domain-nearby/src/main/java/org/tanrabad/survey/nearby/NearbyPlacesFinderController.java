@@ -5,34 +5,31 @@ import org.tanrabad.survey.entity.Place;
 import org.tanrabad.survey.entity.field.Location;
 
 public class NearbyPlacesFinderController {
-    private NearbyPlacesWithLocation nearbyPlacesWithLocation;
-    private NearbyPlacesWithoutLocation nearbyPlacesWithoutLocation;
+    private NearbyPlaceRepository nearbyPlaceRepository;
     private MergeAndSortNearbyPlaces mergeAndSortNearbyPlaces;
     private NearbyPlacePresenter placeListPresenter;
 
-    public NearbyPlacesFinderController(NearbyPlacesWithLocation nearbyPlacesWithLocation,
-            NearbyPlacesWithoutLocation nearbyPlacesWithoutLocation, MergeAndSortNearbyPlaces mergeAndSortNearbyPlaces,
-            NearbyPlacePresenter placeListPresenter) {
-        this.nearbyPlacesWithLocation = nearbyPlacesWithLocation;
-        this.nearbyPlacesWithoutLocation = nearbyPlacesWithoutLocation;
+    public NearbyPlacesFinderController(NearbyPlaceRepository nearbyPlaceRepository,
+                                        MergeAndSortNearbyPlaces mergeAndSortNearbyPlaces,
+                                        NearbyPlacePresenter placeListPresenter) {
+        this.nearbyPlaceRepository = nearbyPlaceRepository;
         this.mergeAndSortNearbyPlaces = mergeAndSortNearbyPlaces;
         this.placeListPresenter = placeListPresenter;
     }
 
     public void findNearbyPlaces(Location myLocation) {
-        List<Place> placeWithLocation = nearbyPlacesWithLocation.getPlaces(myLocation);
+        List<Place> nearbyPlace = nearbyPlaceRepository.findByLocation(myLocation);
 
-        if (placeWithLocation == null) {
+        if (nearbyPlace == null) {
             placeListPresenter.displayPlaceNotFound();
             return;
         }
+        List<Place> nearbyPlaceWithoutLo = nearbyPlaceRepository.findByPlaces(nearbyPlace);
 
-        List<Place> placeWithoutLocation = nearbyPlacesWithoutLocation.getPlaces(placeWithLocation);
-
-        if (placeWithoutLocation == null) {
-            placeListPresenter.displayNearbyPlaces(placeWithLocation);
+        if (nearbyPlaceWithoutLo == null) {
+            placeListPresenter.displayNearbyPlaces(nearbyPlace);
         } else {
-            List<Place> nearByPlaces = mergeAndSortNearbyPlaces.mergeAndSort(placeWithLocation, placeWithoutLocation);
+            List<Place> nearByPlaces = mergeAndSortNearbyPlaces.mergeAndSort(nearbyPlace, nearbyPlaceWithoutLo);
             placeListPresenter.displayNearbyPlaces(nearByPlaces);
         }
     }

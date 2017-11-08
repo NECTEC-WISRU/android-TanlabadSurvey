@@ -2,8 +2,6 @@ package org.tanrabad.survey.nearby;
 
 import info.debatty.java.stringsimilarity.LongestCommonSubsequence;
 import org.junit.Test;
-import org.tanrabad.survey.nearby.ImpLcsMatchPercentageCalculator;
-import org.tanrabad.survey.nearby.LcsMatchPercentageCalculator;
 
 import static org.junit.Assert.assertEquals;
 
@@ -14,8 +12,8 @@ public class ImpLcsMatchPercentageCalculatorTest {
 
     @Test public void findLcsPercentage() throws Exception {
         LongestCommonSubsequence lcs = new LongestCommonSubsequence();
-        LcsMatchPercentageCalculator lcsMatchPercentageCalculator = new ImpLcsMatchPercentageCalculator();
+        StringMatchScore stringMatchScore = new LcsMatchScore();
         assertEquals(0.89473684,
-                lcsMatchPercentageCalculator.calculate(lcs.length(tuHospital, tuSchool), tuHospital.length()), 1);
+                stringMatchScore.calculate(lcs.length(tuHospital, tuSchool), tuHospital.length()), 1);
     }
 }

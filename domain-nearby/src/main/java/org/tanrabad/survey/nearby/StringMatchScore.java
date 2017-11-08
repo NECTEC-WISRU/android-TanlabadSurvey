@@ -1,5 +1,5 @@
 package org.tanrabad.survey.nearby;
 
-public interface LcsMatchPercentageCalculator {
+public interface StringMatchScore {
     double calculate(int lcsLength, int compareStringLength);
 }

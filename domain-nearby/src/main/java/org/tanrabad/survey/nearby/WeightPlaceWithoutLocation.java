@@ -4,29 +4,30 @@ import info.debatty.java.stringsimilarity.LongestCommonSubsequence;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.UUID;
 import org.tanrabad.survey.entity.Place;
 
 public class WeightPlaceWithoutLocation {
     public static Map<UUID, Double> calculate(List<Place> placeWithLocation, List<Place> placeWithoutLocation) {
         Map<UUID, Double> weightedScoreOfPlaceWithoutLocation = new HashMap<>();
-        Map<UUID, String> trimmedPlaceNameWithLocation = removeCommonPlaceName(placeWithLocation);
-        Map<UUID, String> trimmedPlaceNameWithoutLocation = removeCommonPlaceName(placeWithoutLocation);
+        Map<UUID, String> placeWithLo = removeCommonPlaceName(placeWithLocation);
+        Map<UUID, String> placeWithoutLo = removeCommonPlaceName(placeWithoutLocation);
         LongestCommonSubsequence lcs = new LongestCommonSubsequence();
-        LcsMatchPercentageCalculator lcsMatchPercentageCalculator = new ImpLcsMatchPercentageCalculator();
-        for (Map.Entry<UUID, String> placeNameWithLocationEntry : trimmedPlaceNameWithLocation.entrySet()) {
-            for (Map.Entry<UUID, String> placeNameWithoutLocationEntry : trimmedPlaceNameWithoutLocation.entrySet()) {
-                String placeWithLocationName = placeNameWithLocationEntry.getValue();
+        StringMatchScore stringMatchScore = new LcsMatchScore();
+        for (Entry<UUID, String> eachPlaceWithLo : placeWithLo.entrySet()) {
+            for (Entry<UUID, String> eachPlaceWithoutLo : placeWithoutLo.entrySet()) {
+                String placeWithLocationName = eachPlaceWithLo.getValue();
                 int lcsLengthOfPlaceWithoutLocation =
-                    lcs.length(placeWithLocationName, placeNameWithoutLocationEntry.getValue());
-                double lcsWeightPercentage = lcsMatchPercentageCalculator.calculate(lcsLengthOfPlaceWithoutLocation,
+                    lcs.length(placeWithLocationName, eachPlaceWithoutLo.getValue());
+                double lcsWeightPercentage = stringMatchScore.calculate(lcsLengthOfPlaceWithoutLocation,
                     placeWithLocationName.length());
 
-                if (weightedScoreOfPlaceWithoutLocation.containsKey(placeNameWithoutLocationEntry.getKey())) {
-                    Double oldWeight = weightedScoreOfPlaceWithoutLocation.get(placeNameWithoutLocationEntry.getKey());
+                if (weightedScoreOfPlaceWithoutLocation.containsKey(eachPlaceWithoutLo.getKey())) {
+                    Double oldWeight = weightedScoreOfPlaceWithoutLocation.get(eachPlaceWithoutLo.getKey());
                     lcsWeightPercentage += oldWeight;
                 }
-                weightedScoreOfPlaceWithoutLocation.put(placeNameWithoutLocationEntry.getKey(), lcsWeightPercentage);
+                weightedScoreOfPlaceWithoutLocation.put(eachPlaceWithoutLo.getKey(), lcsWeightPercentage);
             }
         }
 
@@ -37,7 +38,7 @@ public class WeightPlaceWithoutLocation {
 
     private static void calculateAverageMatchPercentage(List<Place> placeWithLocation,
             Map<UUID, Double> weightedScoreOfPlaceWithoutLocation) {
-        for (Map.Entry<UUID, Double> entry : weightedScoreOfPlaceWithoutLocation.entrySet()) {
+        for (Entry<UUID, Double> entry : weightedScoreOfPlaceWithoutLocation.entrySet()) {
             double averageMatchPercentageOfEachPlace = entry.getValue() / placeWithLocation.size();
             entry.setValue(averageMatchPercentageOfEachPlace);
         }

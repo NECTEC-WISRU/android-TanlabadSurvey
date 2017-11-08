@@ -14,8 +14,7 @@ import org.tanrabad.survey.entity.field.Location;
 public class NearbyPlaceFinderTest {
     @Rule public JUnitRuleMockery context = new JUnitRuleMockery();
 
-    @Mock private NearbyPlacesWithLocation nearbyPlacesWithLocation;
-    @Mock private NearbyPlacesWithoutLocation nearbyPlacesWithoutLocation;
+    @Mock private NearbyPlaceRepository nearbyPlaceRepository;
     @Mock private MergeAndSortNearbyPlaces mergeAndSortNearbyPlaces;
     @Mock private NearbyPlacePresenter placeListPresenter;
 
@@ -46,9 +45,9 @@ public class NearbyPlaceFinderTest {
 
         context.checking(new Expectations() {
             {
-                oneOf(nearbyPlacesWithLocation).getPlaces(myLocation);
+                oneOf(nearbyPlaceRepository).findByLocation(myLocation);
                 will(returnValue(placeWithLocation));
-                oneOf(nearbyPlacesWithoutLocation).getPlaces(placeWithLocation);
+                oneOf(nearbyPlaceRepository).findByPlaces(placeWithLocation);
                 will(returnValue(placeWithoutLocation));
                 oneOf(mergeAndSortNearbyPlaces).mergeAndSort(placeWithLocation, placeWithoutLocation);
                 will(returnValue(filteredPlaces));
@@ -57,8 +56,7 @@ public class NearbyPlaceFinderTest {
         });
 
         NearbyPlacesFinderController nearbyPlacesFinderController =
-                new NearbyPlacesFinderController(nearbyPlacesWithLocation, nearbyPlacesWithoutLocation,
-                        mergeAndSortNearbyPlaces, placeListPresenter);
+                new NearbyPlacesFinderController(nearbyPlaceRepository, mergeAndSortNearbyPlaces, placeListPresenter);
 
         nearbyPlacesFinderController.findNearbyPlaces(myLocation);
     }
@@ -76,9 +74,9 @@ public class NearbyPlaceFinderTest {
 
         context.checking(new Expectations() {
             {
-                oneOf(nearbyPlacesWithLocation).getPlaces(myLocation);
+                oneOf(nearbyPlaceRepository).findByLocation(myLocation);
                 will(returnValue(placeWithLocation));
-                oneOf(nearbyPlacesWithoutLocation).getPlaces(placeWithLocation);
+                oneOf(nearbyPlaceRepository).findByPlaces(placeWithLocation);
                 will(returnValue(null));
                 never(mergeAndSortNearbyPlaces).mergeAndSort(placeWithLocation, placeWithoutLocation);
                 oneOf(placeListPresenter).displayNearbyPlaces(placeWithLocation);
@@ -86,8 +84,7 @@ public class NearbyPlaceFinderTest {
         });
 
         NearbyPlacesFinderController nearbyPlacesFinderController =
-                new NearbyPlacesFinderController(nearbyPlacesWithLocation, nearbyPlacesWithoutLocation,
-                        mergeAndSortNearbyPlaces, placeListPresenter);
+                new NearbyPlacesFinderController(nearbyPlaceRepository, mergeAndSortNearbyPlaces, placeListPresenter);
 
         nearbyPlacesFinderController.findNearbyPlaces(myLocation);
     }
@@ -96,17 +93,16 @@ public class NearbyPlaceFinderTest {
 
         context.checking(new Expectations() {
             {
-                oneOf(nearbyPlacesWithLocation).getPlaces(myLocation);
+                oneOf(nearbyPlaceRepository).findByLocation(myLocation);
                 will(returnValue(null));
-                never(nearbyPlacesWithoutLocation).getPlaces(null);
+                never(nearbyPlaceRepository).findByPlaces(null);
                 never(mergeAndSortNearbyPlaces).mergeAndSort(null, null);
                 oneOf(placeListPresenter).displayPlaceNotFound();
             }
         });
 
         NearbyPlacesFinderController nearbyPlacesFinderController =
-                new NearbyPlacesFinderController(nearbyPlacesWithLocation, nearbyPlacesWithoutLocation,
-                        mergeAndSortNearbyPlaces, placeListPresenter);
+                new NearbyPlacesFinderController(nearbyPlaceRepository, mergeAndSortNearbyPlaces, placeListPresenter);
 
         nearbyPlacesFinderController.findNearbyPlaces(myLocation);
     }

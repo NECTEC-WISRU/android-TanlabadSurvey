@@ -16,9 +16,9 @@ import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ImpNearbyPlacesWithLocationTest {
+public class ImpNearbyPlaceRepositoryTest {
     @Mock LocationBoundary locationBoundary;
-    private ImpNearbyPlacesWithLocation impNearbyPlacesWithLocation;
+    private ImpNearbyPlaceRepository impNearbyPlacesWithLocation;
     private Location myLocation = new Location(5, 5);
     private LocationBound locationBound = new LocationBound(new Location(0, 0), new Location(10, 10));
 
@@ -43,9 +43,9 @@ public class ImpNearbyPlacesWithLocationTest {
 
         when(locationBoundary.get(myLocation, 5)).thenReturn(locationBound);
 
-        impNearbyPlacesWithLocation = new ImpNearbyPlacesWithLocation(places, locationBoundary);
+        impNearbyPlacesWithLocation = new ImpNearbyPlaceRepository(places, locationBoundary);
 
-        assertEquals(filteredPlace, impNearbyPlacesWithLocation.getPlaces(myLocation));
+        assertEquals(filteredPlace, impNearbyPlacesWithLocation.findByLocation(myLocation));
     }
 
     @Test public void testFindPlaceInsideLocationNotFound() throws Exception {
@@ -63,8 +63,8 @@ public class ImpNearbyPlacesWithLocationTest {
 
         when(locationBoundary.get(myLocation, 5)).thenReturn(locationBound);
 
-        impNearbyPlacesWithLocation = new ImpNearbyPlacesWithLocation(places, locationBoundary);
+        impNearbyPlacesWithLocation = new ImpNearbyPlaceRepository(places, locationBoundary);
 
-        assertNull(impNearbyPlacesWithLocation.getPlaces(myLocation));
+        assertNull(impNearbyPlacesWithLocation.findByLocation(myLocation));
     }
 }

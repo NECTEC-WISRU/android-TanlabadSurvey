@@ -91,10 +91,9 @@ public class NearbyPlaceTest {
         nearbyPlaces.add(thaithaniDorm);
         nearbyPlaces.add(taladThai);
 
-        NearbyPlacesWithLocation nearbyPlacesWithLocation =
-                new ImpNearbyPlacesWithLocation(allPlaces, new ImpLocationBoundary());
+        NearbyPlaceRepository nearbyPlaceRepository =
+                new ImpNearbyPlaceRepository(allPlaces, new ImpLocationBoundary());
 
-        NearbyPlacesWithoutLocation nearbyPlacesWithoutLocation = new ImpNearbyPlacesWithoutLocation(allPlaces);
         MergeAndSortNearbyPlaces mergeAndSortNearbyPlaces = new ImpMergeAndSortNearbyPlaces();
 
         NearbyPlacePresenter placeListPresenter = new NearbyPlacePresenter() {
@@ -108,8 +107,7 @@ public class NearbyPlaceTest {
         };
 
         NearbyPlacesFinderController nearbyPlacesFinderController =
-                new NearbyPlacesFinderController(nearbyPlacesWithLocation, nearbyPlacesWithoutLocation,
-                        mergeAndSortNearbyPlaces, placeListPresenter);
+                new NearbyPlacesFinderController(nearbyPlaceRepository, mergeAndSortNearbyPlaces, placeListPresenter);
         nearbyPlacesFinderController.findNearbyPlaces(new Location(14.077756, 100.601380));
     }
 }

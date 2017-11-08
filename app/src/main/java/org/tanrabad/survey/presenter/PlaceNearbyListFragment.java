@@ -42,13 +42,11 @@ import org.tanrabad.survey.entity.Place;
 import org.tanrabad.survey.entity.field.Location;
 import org.tanrabad.survey.nearby.ImpLocationBoundary;
 import org.tanrabad.survey.nearby.ImpMergeAndSortNearbyPlaces;
-import org.tanrabad.survey.nearby.ImpNearbyPlacesWithLocation;
-import org.tanrabad.survey.nearby.ImpNearbyPlacesWithoutLocation;
+import org.tanrabad.survey.nearby.ImpNearbyPlaceRepository;
 import org.tanrabad.survey.nearby.MergeAndSortNearbyPlaces;
 import org.tanrabad.survey.nearby.NearbyPlacePresenter;
 import org.tanrabad.survey.nearby.NearbyPlacesFinderController;
-import org.tanrabad.survey.nearby.NearbyPlacesWithLocation;
-import org.tanrabad.survey.nearby.NearbyPlacesWithoutLocation;
+import org.tanrabad.survey.nearby.NearbyPlaceRepository;
 import org.tanrabad.survey.presenter.view.EmptyLayoutView;
 import org.tanrabad.survey.repository.BrokerPlaceRepository;
 import org.tanrabad.survey.utils.GpsUtils;
@@ -158,14 +156,10 @@ public class PlaceNearbyListFragment extends Fragment
 
     @Override public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        NearbyPlacesWithLocation nearbyPlacesWithLocation =
-            new ImpNearbyPlacesWithLocation(BrokerPlaceRepository.getInstance().find(), new ImpLocationBoundary());
-        NearbyPlacesWithoutLocation nearbyPlacesWithoutLocation =
-            new ImpNearbyPlacesWithoutLocation(BrokerPlaceRepository.getInstance().find());
+        NearbyPlaceRepository nearbyPlaceRepository =
+            new ImpNearbyPlaceRepository(BrokerPlaceRepository.getInstance().find(), new ImpLocationBoundary());
         MergeAndSortNearbyPlaces mergeAndSortNearbyPlaces = new ImpMergeAndSortNearbyPlaces();
-        nearbyPlacesFinderController =
-                new NearbyPlacesFinderController(nearbyPlacesWithLocation, nearbyPlacesWithoutLocation,
-                        mergeAndSortNearbyPlaces, this);
+        nearbyPlacesFinderController = new NearbyPlacesFinderController(nearbyPlaceRepository, mergeAndSortNearbyPlaces, this);
 
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
