@@ -1,12 +1,14 @@
-package org.tanrabad.survey.nearby;
+package org.tanrabad.survey.nearby.matching;
 
-import info.debatty.java.stringsimilarity.LongestCommonSubsequence;
+import org.tanrabad.survey.entity.Place;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
-import org.tanrabad.survey.entity.Place;
+
+import info.debatty.java.stringsimilarity.LongestCommonSubsequence;
 
 public class WeightPlaceWithoutLocation {
     public static Map<UUID, Double> calculate(List<Place> placeWithLocation, List<Place> placeWithoutLocation) {

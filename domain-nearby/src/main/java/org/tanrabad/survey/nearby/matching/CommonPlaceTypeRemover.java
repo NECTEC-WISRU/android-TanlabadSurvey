@@ -1,4 +1,4 @@
-package org.tanrabad.survey.nearby;
+package org.tanrabad.survey.nearby.matching;
 
 class CommonPlaceTypeRemover {
     private static final String[] COMMON_PLACE_TYPES = {

@@ -1,6 +1,7 @@
-package org.tanrabad.survey.nearby;
+package org.tanrabad.survey.nearby.matching;
 
 import org.junit.Test;
+import org.tanrabad.survey.nearby.matching.CommonPlaceTypeRemover;
 
 import static org.junit.Assert.assertEquals;
 

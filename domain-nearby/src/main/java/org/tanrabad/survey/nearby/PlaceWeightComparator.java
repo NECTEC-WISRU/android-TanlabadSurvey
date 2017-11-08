@@ -4,7 +4,7 @@ import java.util.Comparator;
 import org.tanrabad.survey.entity.Place;
 
 
-public class PlaceWeightScoreComparator implements Comparator<Place> {
+public class PlaceWeightComparator implements Comparator<Place> {
     @Override public int compare(Place place, Place anotherPlace) {
 
         double placeWeight = place.getWeight();

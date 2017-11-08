@@ -6,32 +6,32 @@ import org.tanrabad.survey.entity.field.Location;
 import org.tanrabad.survey.nearby.repository.NearbyPlaceRepository;
 
 public class NearbyPlacesFinderController {
-    private NearbyPlaceRepository nearbyPlaceRepository;
-    private MergeAndSortNearbyPlaces mergeAndSortNearbyPlaces;
-    private NearbyPlacePresenter placeListPresenter;
+    private NearbyPlaceRepository repository;
+    private MergeAndSortNearbyPlaces sorter;
+    private NearbyPlacePresenter presenter;
 
-    public NearbyPlacesFinderController(NearbyPlaceRepository nearbyPlaceRepository,
-                                        MergeAndSortNearbyPlaces mergeAndSortNearbyPlaces,
-                                        NearbyPlacePresenter placeListPresenter) {
-        this.nearbyPlaceRepository = nearbyPlaceRepository;
-        this.mergeAndSortNearbyPlaces = mergeAndSortNearbyPlaces;
-        this.placeListPresenter = placeListPresenter;
+    public NearbyPlacesFinderController(NearbyPlaceRepository repository,
+                                        MergeAndSortNearbyPlaces sorter,
+                                        NearbyPlacePresenter presenter) {
+        this.repository = repository;
+        this.sorter = sorter;
+        this.presenter = presenter;
     }
 
     public void findNearbyPlaces(Location myLocation) {
-        List<Place> nearbyPlace = nearbyPlaceRepository.findByLocation(myLocation);
+        List<Place> nearbyPlace = repository.findByLocation(myLocation);
 
         if (nearbyPlace == null) {
-            placeListPresenter.displayPlaceNotFound();
+            presenter.displayPlaceNotFound();
             return;
         }
-        List<Place> nearbyPlaceWithoutLo = nearbyPlaceRepository.findByPlaces(nearbyPlace);
+        List<Place> nearbyPlaceWithoutLo = repository.findByPlaces(nearbyPlace);
 
         if (nearbyPlaceWithoutLo == null) {
-            placeListPresenter.displayNearbyPlaces(nearbyPlace);
+            presenter.displayNearbyPlaces(nearbyPlace);
         } else {
-            List<Place> nearByPlaces = mergeAndSortNearbyPlaces.mergeAndSort(nearbyPlace, nearbyPlaceWithoutLo);
-            placeListPresenter.displayNearbyPlaces(nearByPlaces);
+            List<Place> nearByPlaces = sorter.mergeAndSort(nearbyPlace, nearbyPlaceWithoutLo);
+            presenter.displayNearbyPlaces(nearByPlaces);
         }
     }
 }

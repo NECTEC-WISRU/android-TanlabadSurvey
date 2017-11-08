@@ -9,7 +9,7 @@ import java.util.UUID;
 import org.tanrabad.survey.entity.Place;
 import org.tanrabad.survey.entity.field.Location;
 import org.tanrabad.survey.nearby.PlaceUtils;
-import org.tanrabad.survey.nearby.WeightPlaceWithoutLocation;
+import org.tanrabad.survey.nearby.matching.WeightPlaceWithoutLocation;
 
 public class ImpNearbyPlaceRepository implements NearbyPlaceRepository {
 

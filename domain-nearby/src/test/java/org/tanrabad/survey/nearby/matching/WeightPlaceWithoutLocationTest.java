@@ -1,4 +1,4 @@
-package org.tanrabad.survey.nearby;
+package org.tanrabad.survey.nearby.matching;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,7 +8,7 @@ import java.util.UUID;
 import org.junit.Test;
 import org.tanrabad.survey.entity.Place;
 import org.tanrabad.survey.entity.field.Location;
-import org.tanrabad.survey.nearby.WeightPlaceWithoutLocation;
+import org.tanrabad.survey.nearby.matching.WeightPlaceWithoutLocation;
 
 import static org.junit.Assert.assertEquals;
 

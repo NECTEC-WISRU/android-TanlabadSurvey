@@ -9,7 +9,7 @@ import org.tanrabad.survey.entity.Place;
 
 import static org.junit.Assert.assertEquals;
 
-public class PlaceWeightScoreComparatorTest {
+public class PlaceWeightComparatorTest {
 
     private final Place โรงเรียนประถมศึกษาธรรมศาสตร์ =
         new Place(UUID.randomUUID(), "โรงเรียนประถมศึกษาธรรมศาสตร์");
@@ -48,7 +48,7 @@ public class PlaceWeightScoreComparatorTest {
         sortedPlaces.add(วัดโพธิ์นิ่ม);
         sortedPlaces.add(วัดนิเวศธรรมประวัติ);
 
-        Collections.sort(places, new PlaceWeightScoreComparator());
+        Collections.sort(places, new PlaceWeightComparator());
         assertEquals(sortedPlaces, places);
     }
 }

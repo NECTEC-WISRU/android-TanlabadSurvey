@@ -1,4 +1,4 @@
-package org.tanrabad.survey.nearby;
+package org.tanrabad.survey.nearby.matching;
 
 public class LcsMatchScore implements StringMatchScore {
     @Override public double calculate(int result, int compareStringLength) {
