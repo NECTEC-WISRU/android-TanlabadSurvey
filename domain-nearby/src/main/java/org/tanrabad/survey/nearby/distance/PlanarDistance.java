@@ -19,6 +19,7 @@ package org.tanrabad.survey.nearby.distance;
 
 import org.tanrabad.survey.entity.field.Location;
 
+@Deprecated
 public class PlanarDistance implements DistanceCalculator {
     private static final double RADIUS = 6371;
 

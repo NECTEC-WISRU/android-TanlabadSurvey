@@ -17,7 +17,7 @@ public class EllipsoidDistanceWithDummyTest {
 
     private static final double DELTA = 0.5;
 
-    private final EllipsoidDistance ellipsoidDistance = new EllipsoidDistance();
+    private final DistanceCalculator ellipsoidDistance = new EllipsoidDistance();
 
     private final Location startLocation = new Location(40.6892, -74.0444);
     private final Location destinationLocation;
