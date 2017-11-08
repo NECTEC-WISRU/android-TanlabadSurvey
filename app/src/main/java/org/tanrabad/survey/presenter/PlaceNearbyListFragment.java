@@ -34,7 +34,7 @@ import android.widget.AdapterView;
 import android.widget.TextView;
 
 import com.bartoszlipinski.recyclerviewheader.RecyclerViewHeader;
-import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.location.LocationListener;
 
 import org.tanrabad.survey.R;
@@ -42,11 +42,9 @@ import org.tanrabad.survey.TanrabadApp;
 import org.tanrabad.survey.entity.Place;
 import org.tanrabad.survey.entity.field.Location;
 import org.tanrabad.survey.nearby.ImpMergeAndSortNearbyPlaces;
-import org.tanrabad.survey.nearby.MergeAndSortNearbyPlaces;
 import org.tanrabad.survey.nearby.NearbyPlacePresenter;
 import org.tanrabad.survey.nearby.NearbyPlacesFinderController;
 import org.tanrabad.survey.nearby.repository.ImpNearbyPlaceRepository;
-import org.tanrabad.survey.nearby.repository.NearbyPlaceRepository;
 import org.tanrabad.survey.presenter.view.EmptyLayoutView;
 import org.tanrabad.survey.repository.BrokerPlaceRepository;
 import org.tanrabad.survey.utils.GpsUtils;
@@ -71,7 +69,7 @@ public class PlaceNearbyListFragment extends Fragment
     PlayLocationService playLocationService = PlayLocationService.getInstance();
     private NearbyPlacesFinderController nearbyPlacesFinderController;
 
-    GoogleApiClient.ConnectionCallbacks locationServiceCallback = new GoogleApiClient.ConnectionCallbacks() {
+    ConnectionCallbacks locationServiceCallback = new ConnectionCallbacks() {
         @Override public void onConnected(@Nullable Bundle bundle) {
             playLocationService.setupLocationUpdateService(new LocationListener() {
                 @Override public void onLocationChanged(android.location.Location location) {
@@ -147,7 +145,6 @@ public class PlaceNearbyListFragment extends Fragment
     }
 
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_nearby_place_list, container, false);
         setupViews(view);
         setupEmptyList();
@@ -158,16 +155,18 @@ public class PlaceNearbyListFragment extends Fragment
 
     @Override public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        NearbyPlaceRepository nearbyPlaceRepository =
-            new ImpNearbyPlaceRepository(BrokerPlaceRepository.getInstance().find());
-        MergeAndSortNearbyPlaces mergeAndSortNearbyPlaces = new ImpMergeAndSortNearbyPlaces();
-        nearbyPlacesFinderController = new NearbyPlacesFinderController(nearbyPlaceRepository, mergeAndSortNearbyPlaces, this);
+        List<Place> allPlaces = BrokerPlaceRepository.getInstance().find();
+        nearbyPlacesFinderController = new NearbyPlacesFinderController(
+            new ImpNearbyPlaceRepository(allPlaces),
+            new ImpMergeAndSortNearbyPlaces(),
+            this);
 
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
+            != PackageManager.PERMISSION_GRANTED) {
             emptyPlacesView.setEmptyText(R.string.please_enable_location_permission_before_use);
             requestPermissions(new String[] { Manifest.permission.ACCESS_FINE_LOCATION },
-                    LOCATION_PERMISSION_REQUEST_CODE);
+                LOCATION_PERMISSION_REQUEST_CODE);
+
         } else {
             startSearchNearbyPlaces();
         }
