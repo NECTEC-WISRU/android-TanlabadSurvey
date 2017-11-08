@@ -1,4 +1,4 @@
-package org.tanrabad.survey.nearby;
+package org.tanrabad.survey.nearby.repository;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,6 +9,9 @@ import java.util.UUID;
 import org.tanrabad.survey.entity.Place;
 import org.tanrabad.survey.entity.field.Location;
 import org.tanrabad.survey.entity.field.LocationBound;
+import org.tanrabad.survey.nearby.LocationBoundary;
+import org.tanrabad.survey.nearby.PlaceUtils;
+import org.tanrabad.survey.nearby.WeightPlaceWithoutLocation;
 
 public class ImpNearbyPlaceRepository implements NearbyPlaceRepository {
 

@@ -1,4 +1,4 @@
-package org.tanrabad.survey.nearby;
+package org.tanrabad.survey.nearby.repository;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -7,7 +7,7 @@ import java.util.UUID;
 import org.junit.Test;
 import org.tanrabad.survey.entity.Place;
 import org.tanrabad.survey.entity.field.Location;
-import org.tanrabad.survey.nearby.PlaceDistanceComparator;
+import org.tanrabad.survey.nearby.repository.PlaceDistanceComparator;
 
 import static org.junit.Assert.assertEquals;
 

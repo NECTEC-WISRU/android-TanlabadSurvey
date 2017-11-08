@@ -3,6 +3,7 @@ package org.tanrabad.survey.nearby;
 import java.util.List;
 import org.tanrabad.survey.entity.Place;
 import org.tanrabad.survey.entity.field.Location;
+import org.tanrabad.survey.nearby.repository.NearbyPlaceRepository;
 
 public class NearbyPlacesFinderController {
     private NearbyPlaceRepository nearbyPlaceRepository;

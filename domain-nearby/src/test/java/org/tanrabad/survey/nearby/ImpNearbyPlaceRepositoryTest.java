@@ -10,6 +10,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.tanrabad.survey.entity.Place;
 import org.tanrabad.survey.entity.field.Location;
 import org.tanrabad.survey.entity.field.LocationBound;
+import org.tanrabad.survey.nearby.repository.ImpNearbyPlaceRepository;
+import org.tanrabad.survey.nearby.repository.NearbyPlaceRepository;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -18,7 +20,7 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class ImpNearbyPlaceRepositoryTest {
     @Mock LocationBoundary locationBoundary;
-    private ImpNearbyPlaceRepository impNearbyPlacesWithLocation;
+    private NearbyPlaceRepository impNearbyPlacesWithLocation;
     private Location myLocation = new Location(5, 5);
     private LocationBound locationBound = new LocationBound(new Location(0, 0), new Location(10, 10));
 

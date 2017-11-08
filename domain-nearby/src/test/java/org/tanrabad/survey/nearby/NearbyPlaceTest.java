@@ -6,6 +6,8 @@ import java.util.UUID;
 import org.junit.Test;
 import org.tanrabad.survey.entity.Place;
 import org.tanrabad.survey.entity.field.Location;
+import org.tanrabad.survey.nearby.repository.ImpNearbyPlaceRepository;
+import org.tanrabad.survey.nearby.repository.NearbyPlaceRepository;
 
 import static org.junit.Assert.assertEquals;
 
