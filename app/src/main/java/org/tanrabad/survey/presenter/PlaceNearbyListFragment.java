@@ -32,20 +32,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.TextView;
+
 import com.bartoszlipinski.recyclerviewheader.RecyclerViewHeader;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
-import java.util.List;
+
 import org.tanrabad.survey.R;
 import org.tanrabad.survey.TanrabadApp;
 import org.tanrabad.survey.entity.Place;
 import org.tanrabad.survey.entity.field.Location;
-import org.tanrabad.survey.nearby.ImpLocationBoundary;
 import org.tanrabad.survey.nearby.ImpMergeAndSortNearbyPlaces;
-import org.tanrabad.survey.nearby.repository.ImpNearbyPlaceRepository;
 import org.tanrabad.survey.nearby.MergeAndSortNearbyPlaces;
 import org.tanrabad.survey.nearby.NearbyPlacePresenter;
 import org.tanrabad.survey.nearby.NearbyPlacesFinderController;
+import org.tanrabad.survey.nearby.repository.ImpNearbyPlaceRepository;
 import org.tanrabad.survey.nearby.repository.NearbyPlaceRepository;
 import org.tanrabad.survey.presenter.view.EmptyLayoutView;
 import org.tanrabad.survey.repository.BrokerPlaceRepository;
@@ -53,6 +53,8 @@ import org.tanrabad.survey.utils.GpsUtils;
 import org.tanrabad.survey.utils.PlayLocationService;
 import org.tanrabad.survey.utils.prompt.AlertDialogPromptMessage;
 import org.tanrabad.survey.utils.prompt.PromptMessage;
+
+import java.util.List;
 
 public class PlaceNearbyListFragment extends Fragment
         implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
@@ -157,7 +159,7 @@ public class PlaceNearbyListFragment extends Fragment
     @Override public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         NearbyPlaceRepository nearbyPlaceRepository =
-            new ImpNearbyPlaceRepository(BrokerPlaceRepository.getInstance().find(), new ImpLocationBoundary());
+            new ImpNearbyPlaceRepository(BrokerPlaceRepository.getInstance().find());
         MergeAndSortNearbyPlaces mergeAndSortNearbyPlaces = new ImpMergeAndSortNearbyPlaces();
         nearbyPlacesFinderController = new NearbyPlacesFinderController(nearbyPlaceRepository, mergeAndSortNearbyPlaces, this);
 

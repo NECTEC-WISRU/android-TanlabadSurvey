@@ -1,17 +1,16 @@
-package org.tanrabad.survey.nearby;
+package org.tanrabad.survey.nearby.repository;
 
 import org.tanrabad.survey.entity.field.Location;
-import org.tanrabad.survey.entity.field.LocationBound;
 
-public class ImpLocationBoundary implements LocationBoundary {
+class ImpLocationBoundCalculator implements LocationBoundCalculator {
 
     private static final double KM_PER_LNG = 111.699;
     private static final double KM_PER_LAT = 110.567;
 
-    @Override public LocationBound get(Location location, int distance) {
+    @Override public org.tanrabad.survey.entity.field.LocationBound get(Location location, int distance) {
         Location minLocation = getMinLocation(location, distance);
         Location maxLocation = getMaxLocation(location, distance);
-        return new LocationBound(minLocation, maxLocation);
+        return new org.tanrabad.survey.entity.field.LocationBound(minLocation, maxLocation);
     }
 
     private Location getMinLocation(Location currentLocation, double distanceInKm) {

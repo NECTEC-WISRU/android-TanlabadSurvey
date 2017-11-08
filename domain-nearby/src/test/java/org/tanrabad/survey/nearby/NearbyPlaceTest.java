@@ -94,7 +94,7 @@ public class NearbyPlaceTest {
         nearbyPlaces.add(taladThai);
 
         NearbyPlaceRepository nearbyPlaceRepository =
-                new ImpNearbyPlaceRepository(allPlaces, new ImpLocationBoundary());
+                new ImpNearbyPlaceRepository(allPlaces);
 
         MergeAndSortNearbyPlaces mergeAndSortNearbyPlaces = new ImpMergeAndSortNearbyPlaces();
 

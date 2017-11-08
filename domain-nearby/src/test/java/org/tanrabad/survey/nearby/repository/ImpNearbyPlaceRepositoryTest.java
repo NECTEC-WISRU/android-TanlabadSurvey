@@ -1,4 +1,4 @@
-package org.tanrabad.survey.nearby;
+package org.tanrabad.survey.nearby.repository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,9 +9,6 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.tanrabad.survey.entity.Place;
 import org.tanrabad.survey.entity.field.Location;
-import org.tanrabad.survey.entity.field.LocationBound;
-import org.tanrabad.survey.nearby.repository.ImpNearbyPlaceRepository;
-import org.tanrabad.survey.nearby.repository.NearbyPlaceRepository;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -19,10 +16,11 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ImpNearbyPlaceRepositoryTest {
-    @Mock LocationBoundary locationBoundary;
+    @Mock
+    LocationBoundCalculator locationBoundCalculator;
     private NearbyPlaceRepository impNearbyPlacesWithLocation;
     private Location myLocation = new Location(5, 5);
-    private LocationBound locationBound = new LocationBound(new Location(0, 0), new Location(10, 10));
+    private org.tanrabad.survey.entity.field.LocationBound locationBound = new org.tanrabad.survey.entity.field.LocationBound(new Location(0, 0), new Location(10, 10));
 
 
     @Test public void testFindPlaceInsideLocation() throws Exception {
@@ -43,9 +41,9 @@ public class ImpNearbyPlaceRepositoryTest {
         filteredPlace.add(place2);
         filteredPlace.add(place1);
 
-        when(locationBoundary.get(myLocation, 5)).thenReturn(locationBound);
+        when(locationBoundCalculator.get(myLocation, 5)).thenReturn(locationBound);
 
-        impNearbyPlacesWithLocation = new ImpNearbyPlaceRepository(places, locationBoundary);
+        impNearbyPlacesWithLocation = new ImpNearbyPlaceRepository(places, locationBoundCalculator);
 
         assertEquals(filteredPlace, impNearbyPlacesWithLocation.findByLocation(myLocation));
     }
@@ -63,9 +61,9 @@ public class ImpNearbyPlaceRepositoryTest {
         places.add(place2);
         places.add(place3);
 
-        when(locationBoundary.get(myLocation, 5)).thenReturn(locationBound);
+        when(locationBoundCalculator.get(myLocation, 5)).thenReturn(locationBound);
 
-        impNearbyPlacesWithLocation = new ImpNearbyPlaceRepository(places, locationBoundary);
+        impNearbyPlacesWithLocation = new ImpNearbyPlaceRepository(places, locationBoundCalculator);
 
         assertNull(impNearbyPlacesWithLocation.findByLocation(myLocation));
     }

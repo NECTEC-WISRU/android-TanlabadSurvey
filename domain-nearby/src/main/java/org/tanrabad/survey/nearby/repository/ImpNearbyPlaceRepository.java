@@ -8,8 +8,6 @@ import java.util.UUID;
 
 import org.tanrabad.survey.entity.Place;
 import org.tanrabad.survey.entity.field.Location;
-import org.tanrabad.survey.entity.field.LocationBound;
-import org.tanrabad.survey.nearby.LocationBoundary;
 import org.tanrabad.survey.nearby.PlaceUtils;
 import org.tanrabad.survey.nearby.WeightPlaceWithoutLocation;
 
@@ -17,25 +15,29 @@ public class ImpNearbyPlaceRepository implements NearbyPlaceRepository {
 
     public static final int DISTANCE_IN_KM = 5;
     private final List<Place> places;
-    private LocationBoundary locationBoundary;
+    private LocationBoundCalculator locationBoundCalculator;
 
-    public ImpNearbyPlaceRepository(List<Place> allPlaces, LocationBoundary locationBoundary) {
+    public ImpNearbyPlaceRepository(List<Place> allPlaces) {
+        this(allPlaces, new ImpLocationBoundCalculator());
+    }
+
+    public ImpNearbyPlaceRepository(List<Place> allPlaces, LocationBoundCalculator locationBoundCalculator) {
         this.places = allPlaces;
-        this.locationBoundary = locationBoundary;
+        this.locationBoundCalculator = locationBoundCalculator;
     }
 
     @Override public List<Place> findByLocation(final Location location) {
         if (places == null || places.isEmpty()) return null;
 
-        List<Place> place = getPlaceInsideLocationBoundary(places, locationBoundary.get(location, DISTANCE_IN_KM));
+        List<Place> place = getPlaceInsideLocationBoundary(places, locationBoundCalculator.get(location, DISTANCE_IN_KM));
         Collections.sort(place, new PlaceDistanceComparator(location));
         return place.isEmpty() ? null : place;
     }
 
-    private List<Place> getPlaceInsideLocationBoundary(List<Place> places, LocationBound locationBoundary) {
+    private List<Place> getPlaceInsideLocationBoundary(List<Place> places, org.tanrabad.survey.entity.field.LocationBound locationBound) {
         List<Place> placeInsideLocation = new ArrayList<>();
-        Location minimumLocation = locationBoundary.getMinimumLocation();
-        Location maximumLocation = locationBoundary.getMaximumLocation();
+        Location minimumLocation = locationBound.getMinimumLocation();
+        Location maximumLocation = locationBound.getMaximumLocation();
         for (Place eachPlace : places) {
             Location placeLocation = eachPlace.getLocation();
             if (placeLocation == null) continue;

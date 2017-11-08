@@ -8,6 +8,4 @@ public interface NearbyPlaceRepository {
     List<Place> findByLocation(Location location);
 
     List<Place> findByPlaces(List<Place> places);
-
-
 }

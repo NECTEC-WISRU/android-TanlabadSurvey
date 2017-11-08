@@ -1,4 +1,4 @@
-package org.tanrabad.survey.nearby;
+package org.tanrabad.survey.nearby.repository;
 
 import org.junit.Test;
 import org.tanrabad.survey.entity.field.Location;
@@ -6,7 +6,7 @@ import org.tanrabad.survey.entity.field.LocationBound;
 
 import static org.junit.Assert.*;
 
-public class ImpLocationBoundaryTest {
+public class ImpLocationBoundCalculatorTest {
 
     private static final int DISTANCE_IN_KM = 100;
     private final Location myLocation = new Location(40.6892, -74.0444);
@@ -16,7 +16,7 @@ public class ImpLocationBoundaryTest {
 
     @Test
     public void get() throws Exception {
-        ImpLocationBoundary impLocationBoundary = new ImpLocationBoundary();
+        ImpLocationBoundCalculator impLocationBoundary = new ImpLocationBoundCalculator();
         LocationBound locationBound = impLocationBoundary.get(myLocation, DISTANCE_IN_KM);
 
         assertEquals(expectedBound, locationBound);
