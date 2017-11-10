@@ -137,7 +137,7 @@ public class PlaceNearbyListFragment extends TanrabadFragment
         PromptMessage promptMessage = new AlertDialogPromptMessage(getActivity());
         promptMessage.setOnConfirm(getString(R.string.survey), new PromptMessage.OnConfirmListener() {
             @Override public void onConfirm() {
-                TanrabadApp.action().startSurvey(placeData);
+                TanrabadApp.action().startSurvey(placeData, "nearby");
                 SurveyBuildingHistoryActivity.open(getActivity(), placeData);
             }
         });
