@@ -22,6 +22,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -36,11 +37,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bartoszlipinski.recyclerviewheader.RecyclerViewHeader;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.location.LocationListener;
 
+import org.tanrabad.survey.BuildConfig;
 import org.tanrabad.survey.R;
 import org.tanrabad.survey.TanrabadApp;
 import org.tanrabad.survey.entity.Place;
@@ -77,13 +80,14 @@ public class PlaceNearbyListFragment extends TanrabadFragment
         @Override public void onConnected(@Nullable Bundle bundle) {
             playLocationService.setupLocationUpdateService(new LocationListener() {
                 @Override public void onLocationChanged(android.location.Location location) {
+                    if (BuildConfig.DEBUG)
+                        Toast.makeText(getContext(), "Location Changed", Toast.LENGTH_SHORT).show();
                     loadPlaceList(location);
                 }
             });
         }
 
         @Override public void onConnectionSuspended(int i) {
-
         }
     };
     private Location currentLocation;
@@ -112,24 +116,39 @@ public class PlaceNearbyListFragment extends TanrabadFragment
     }
 
     @Override public void displayPlaceNotFound() {
-        nearbyPlaceAdapter.clearData();
-        placeCountView.setVisibility(View.GONE);
-        emptyPlacesView.showEmptyLayout();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                nearbyPlaceAdapter.clearData();
+                placeCountView.setVisibility(View.GONE);
+                emptyPlacesView.showEmptyLayout();
+            }
+        });
     }
 
-    @Override public void displayNearbyPlaces(List<Place> places) {
-
-        nearbyPlaceAdapter.setLocation(currentLocation);
-        nearbyPlaceAdapter.updateData(places);
-        placeCountView.setText(getString(R.string.format_place_count, places.size()));
-        placeCountView.setVisibility(View.VISIBLE);
-        emptyPlacesView.hide();
+    @Override
+    public void displayNearbyPlaces(final List<Place> places) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                nearbyPlaceAdapter.setLocation(currentLocation);
+                nearbyPlaceAdapter.updateData(places);
+                placeCountView.setText(getString(R.string.format_place_count, places.size()));
+                placeCountView.setVisibility(View.VISIBLE);
+                emptyPlacesView.hide();
+            }
+        });
     }
 
     protected void loadPlaceList(android.location.Location location) {
         emptyPlacesView.showProgressBar();
         currentLocation = new Location(location.getLatitude(), location.getLongitude());
-        nearbyPlacesFinderController.findNearbyPlaces(currentLocation);
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                nearbyPlacesFinderController.findNearbyPlaces(currentLocation);
+            }
+        });
     }
 
     @Override public void onItemClick(AdapterView<?> adapterView, View view, final int position, long l) {
@@ -244,7 +263,7 @@ public class PlaceNearbyListFragment extends TanrabadFragment
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK)
+        if (resultCode == Activity.RESULT_OK && requestCode == PlaceFormActivity.ADD_PLACE_REQ_CODE)
             startSearchNearbyPlaces();
     }
 
