@@ -21,6 +21,7 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+
 import org.tanrabad.survey.R;
 
 
@@ -47,9 +48,9 @@ class PlacePagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position) {
             case 0:
-                return context.getResources().getString(R.string.find_place_by_database);
-            case 1:
                 return context.getResources().getString(R.string.nearby_places);
+            case 1:
+                return context.getResources().getString(R.string.find_place_by_database);
             default:
                 return null;
         }
@@ -59,9 +60,9 @@ class PlacePagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return placeListInDatabaseFragment;
-            case 1:
                 return placeNearbyListFragment;
+            case 1:
+                return placeListInDatabaseFragment;
             default:
                 return null;
         }

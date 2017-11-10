@@ -23,7 +23,6 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -54,7 +53,7 @@ import org.tanrabad.survey.utils.prompt.PromptMessage;
 
 import java.util.List;
 
-public class PlaceNearbyListFragment extends Fragment
+public class PlaceNearbyListFragment extends TanrabadFragment
         implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener,
     NearbyPlacePresenter {
 
@@ -114,6 +113,7 @@ public class PlaceNearbyListFragment extends Fragment
     }
 
     @Override public void displayNearbyPlaces(List<Place> places) {
+
         nearbyPlaceAdapter.setLocation(currentLocation);
         nearbyPlaceAdapter.updateData(places);
         placeCountView.setText(getString(R.string.format_place_count, places.size()));
@@ -204,7 +204,7 @@ public class PlaceNearbyListFragment extends Fragment
 
     private void setupEmptyList() {
         emptyPlacesView.setEmptyIcon(R.mipmap.ic_place);
-        emptyPlacesView.setEmptyText(R.string.nearby_place_not_found);
+        emptyPlacesView.setEmptyText(R.string.nearby_places_not_found);
         emptyPlacesView.setEmptyButtonVisibility(false);
     }
 

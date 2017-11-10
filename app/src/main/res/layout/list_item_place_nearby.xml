@@ -19,65 +19,80 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/ListItem"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" style="@style/ListItem">
+    android:layout_height="wrap_content">
 
-  <ImageView
-      android:id="@+id/place_icon"
-      android:layout_centerVertical="true"
-      android:contentDescription="@string/place_icon"
-      tools:src="@mipmap/ic_place_hospital"
-      style="@style/ListIcon"/>
+    <ImageView
+        android:id="@+id/place_icon"
+        style="@style/ListIcon"
+        android:layout_centerVertical="true"
+        android:contentDescription="@string/place_icon"
+        tools:src="@mipmap/ic_place_hospital"/>
 
-  <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_centerVertical="true"
-      android:layout_marginLeft="@dimen/space_between_content"
-      android:layout_toEndOf="@+id/place_icon"
-      android:layout_toLeftOf="@id/not_sync"
-      android:layout_toRightOf="@+id/place_icon"
-      android:orientation="vertical">
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/space_between_content"
+        android:layout_toEndOf="@+id/place_icon"
+        android:layout_toLeftOf="@id/not_sync"
+        android:layout_toRightOf="@+id/place_icon"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/place_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="8dp"
+            android:maxLines="1"
+            android:textIsSelectable="false"
+            android:textSize="@dimen/text_title"
+            tools:text="ทดสอบ"/>
+
+
+        <TextView
+            android:id="@+id/place_subtype"
+            style="@style/TanrabadTextAppearance.Caption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textIsSelectable="false"
+            tools:text="โรงพยาบาลชุมชน"/>
+
+        <th.or.nectec.thai.widget.address.AddressPicker
+            android:id="@+id/place_address"
+            style="@style/TanrabadTextAppearance.Caption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:clickable="false"
+            android:textIsSelectable="false"
+            android:textSize="@dimen/text_small_caption"
+            tools:text="แขวงหลักสี่ เขตหลักสี่ กรุงเทพมหานคร"/>
+    </LinearLayout>
+
 
     <TextView
-        android:id="@+id/place_name"
-        android:layout_width="wrap_content"
+        android:id="@+id/place_distance"
+        style="@style/TanrabadTextAppearance.Caption"
+        android:layout_width="@dimen/list_icon_size"
         android:layout_height="wrap_content"
-        android:drawablePadding="8dp"
-        android:maxLines="1"
+        android:layout_below="@+id/place_icon"
+        android:gravity="center"
         android:textIsSelectable="false"
-        android:textSize="@dimen/text_title"
-        tools:text="ทดสอบ"/>
-
+        tools:ignore="RelativeOverlap"
+        tools:text="1 กม."/>
 
     <TextView
-        android:id="@+id/place_subtype"
-        android:layout_width="wrap_content"
+        android:id="@+id/place_weight"
+        style="@style/TanrabadTextAppearance.Caption"
+        android:layout_width="@dimen/list_icon_size"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/place_icon"
+        android:gravity="center"
         android:textIsSelectable="false"
-        tools:text="โรงพยาบาลชุมชน"
-        style="@style/TanrabadTextAppearance.Caption"/>
-
-    <th.or.nectec.thai.widget.address.AddressPicker
-        android:id="@+id/place_address"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@null"
-        android:clickable="false"
-        android:textIsSelectable="false"
-        android:textSize="@dimen/text_small_caption"
-        tools:text="แขวงหลักสี่ เขตหลักสี่ กรุงเทพมหานคร"
-        style="@style/TanrabadTextAppearance.Caption"/>
-  </LinearLayout>
-
-
-  <TextView
-      tools:ignore="RelativeOverlap"
-      android:id="@+id/place_distance"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_alignParentRight="true"
-      android:layout_alignParentEnd="true"
-      android:layout_centerVertical="true" android:textIsSelectable="false"
-      tools:text="1 กม." style="@style/TanrabadTextAppearance.Caption"/>
+        tools:visibility="invisible"
+        tools:ignore="RelativeOverlap"
+        tools:text="0.9 P"/>
 </RelativeLayout>

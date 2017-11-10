@@ -25,20 +25,24 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
+
 import org.tanrabad.survey.R;
-import org.tanrabad.survey.nearby.distance.DistanceCalculator;
-import org.tanrabad.survey.nearby.distance.EllipsoidDistance;
 import org.tanrabad.survey.entity.Place;
 import org.tanrabad.survey.entity.field.Location;
+import org.tanrabad.survey.nearby.distance.DistanceCalculator;
+import org.tanrabad.survey.nearby.distance.EllipsoidDistance;
 import org.tanrabad.survey.repository.BrokerPlaceSubTypeRepository;
 import org.tanrabad.survey.utils.android.ResourceUtils;
+
+import java.text.DecimalFormat;
+import java.text.Format;
+import java.util.ArrayList;
+import java.util.List;
+
 import th.or.nectec.thai.widget.address.AddressPicker;
 
 public class NearbyPlaceAdapter extends RecyclerView.Adapter<NearbyPlaceAdapter.ViewHolder>
-        implements ListViewAdapter<Place> {
+    implements ListViewAdapter<Place> {
 
     private Context context;
 
@@ -47,7 +51,6 @@ public class NearbyPlaceAdapter extends RecyclerView.Adapter<NearbyPlaceAdapter.
     private AdapterView.OnItemLongClickListener onItemLongClickListener;
     private Location location;
     private DistanceCalculator ellipsoidDistance = new EllipsoidDistance();
-    private DecimalFormat decimalFormat = new DecimalFormat("#.##");
 
     public NearbyPlaceAdapter(Context context) {
         this.context = context;
@@ -57,70 +60,65 @@ public class NearbyPlaceAdapter extends RecyclerView.Adapter<NearbyPlaceAdapter.
         this.location = location;
     }
 
-    @Override public void updateData(List<Place> places) {
+    @Override
+    public void updateData(List<Place> places) {
         this.places = places;
         notifyDataSetChanged();
     }
 
-    @Override public void clearData() {
+    @Override
+    public void clearData() {
         this.places = new ArrayList<>();
         notifyDataSetChanged();
     }
 
-    @Override public Place getItem(int position) {
+    @Override
+    public Place getItem(int position) {
         return places.get(position);
     }
 
-    @Override public void setOnItemClickListener(AdapterView.OnItemClickListener onItemClickListener) {
+    @Override
+    public void setOnItemClickListener(AdapterView.OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
     }
 
-    @Override public void setOnItemLongClickListener(AdapterView.OnItemLongClickListener onItemLongClickListener) {
+    @Override
+    public void setOnItemLongClickListener(AdapterView.OnItemLongClickListener onItemLongClickListener) {
         this.onItemLongClickListener = onItemLongClickListener;
     }
 
-    @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    @Override
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(context).inflate(R.layout.list_item_place_nearby, parent, false);
         return new ViewHolder(v, this);
     }
 
-    @Override public void onBindViewHolder(ViewHolder holder, int position) {
-        Place place = places.get(position);
-        holder.placeTextView.setText(place.getName());
-        holder.placeSubtypeTextView.setText(
-                BrokerPlaceSubTypeRepository.getInstance().findById(place.getSubType()).getName());
-        holder.placeAddressTextView.setAddressCode(place.getSubdistrictCode());
-        holder.placeIcon.setImageResource(PlaceIconMapping.getPlaceIcon(place));
-        holder.placeTextView.setCompoundDrawablesWithIntrinsicBounds(null, null, place.getLocation() == null ? null
-                : ResourceUtils.from(context).getDrawable(R.drawable.ic_place_have_location), null);
-        if (location != null && place.getLocation() != null) {
-            holder.placeDistanceTextView.setVisibility(View.VISIBLE);
-            holder.placeDistanceTextView.setText(String.format("%s กม.",
-                    decimalFormat.format(ellipsoidDistance.calculate(location, place.getLocation()))));
-        } else {
-            holder.placeDistanceTextView.setVisibility(View.GONE);
-        }
+    @Override
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        holder.bind(places.get(position));
     }
 
-    @Override public long getItemId(int i) {
+    @Override
+    public long getItemId(int i) {
         return i;
     }
 
-    @Override public int getItemCount() {
+    @Override
+    public int getItemCount() {
         return places.size();
     }
 
     private void onItemHolderClick(ViewHolder itemHolder) {
         if (onItemClickListener != null) {
             onItemClickListener.onItemClick(null, itemHolder.itemView, itemHolder.getAdapterPosition(),
-                    itemHolder.getItemId());
+                itemHolder.getItemId());
         }
     }
 
     private void onItemHolderLongClick(ViewHolder itemHolder) {
         if (onItemLongClickListener != null) {
             onItemLongClickListener.onItemLongClick(null, itemHolder.itemView, itemHolder.getAdapterPosition(),
-                    itemHolder.getItemId());
+                itemHolder.getItemId());
         }
     }
 
@@ -128,9 +126,12 @@ public class NearbyPlaceAdapter extends RecyclerView.Adapter<NearbyPlaceAdapter.
         private TextView placeTextView;
         private TextView placeSubtypeTextView;
         private TextView placeDistanceTextView;
+        private TextView placeWeightTextView;
         private AddressPicker placeAddressTextView;
         private ImageView placeIcon;
         private NearbyPlaceAdapter adapter;
+
+        private Format decimalFormat = new DecimalFormat("#.##");
 
         public ViewHolder(View itemView, NearbyPlaceAdapter adapter) {
             super(itemView);
@@ -140,17 +141,43 @@ public class NearbyPlaceAdapter extends RecyclerView.Adapter<NearbyPlaceAdapter.
             placeTextView = (TextView) itemView.findViewById(R.id.place_name);
             placeSubtypeTextView = (TextView) itemView.findViewById(R.id.place_subtype);
             placeDistanceTextView = (TextView) itemView.findViewById(R.id.place_distance);
+            placeWeightTextView = (TextView) itemView.findViewById(R.id.place_weight);
             placeAddressTextView = (AddressPicker) itemView.findViewById(R.id.place_address);
             placeIcon = (ImageView) itemView.findViewById(R.id.place_icon);
         }
 
-        @Override public void onClick(View view) {
+        @Override
+        public void onClick(View view) {
             adapter.onItemHolderClick(this);
         }
 
-        @Override public boolean onLongClick(View view) {
+        @Override
+        public boolean onLongClick(View view) {
             adapter.onItemHolderLongClick(this);
             return true;
+        }
+
+        public void bind(Place place) {
+            placeWeightTextView.setVisibility(View.GONE);
+            placeDistanceTextView.setVisibility(View.GONE);
+
+            placeTextView.setText(place.getName());
+            placeSubtypeTextView.setText(
+                BrokerPlaceSubTypeRepository.getInstance().findById(place.getSubType()).getName());
+            placeAddressTextView.setAddressCode(place.getSubdistrictCode());
+            placeIcon.setImageResource(PlaceIconMapping.getPlaceIcon(place));
+            placeTextView.setCompoundDrawablesWithIntrinsicBounds(null, null, place.getLocation() == null ? null
+                : ResourceUtils.from(context).getDrawable(R.drawable.ic_place_have_location), null);
+            if (location != null && place.getLocation() != null) {
+                placeDistanceTextView.setVisibility(View.VISIBLE);
+                double distance = ellipsoidDistance.calculate(location, place.getLocation());
+                placeDistanceTextView.setText(String.format("%s กม.",
+                    decimalFormat.format(distance)));
+            } else {
+                placeWeightTextView.setVisibility(View.VISIBLE);
+                placeWeightTextView.setText(String.format("%s P",
+                    decimalFormat.format(place.getWeight())));
+            }
         }
     }
 }

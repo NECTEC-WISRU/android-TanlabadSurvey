@@ -1,19 +1,19 @@
 package org.tanrabad.survey.nearby.repository;
 
+import org.tanrabad.survey.entity.Place;
+import org.tanrabad.survey.entity.field.Location;
+import org.tanrabad.survey.nearby.PlaceUtils;
+import org.tanrabad.survey.nearby.matching.WeightPlaceWithoutLocation;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.tanrabad.survey.entity.Place;
-import org.tanrabad.survey.entity.field.Location;
-import org.tanrabad.survey.nearby.PlaceUtils;
-import org.tanrabad.survey.nearby.matching.WeightPlaceWithoutLocation;
-
 public class ImpNearbyPlaceRepository implements NearbyPlaceRepository {
 
-    public static final int DISTANCE_IN_KM = 5;
+    public static final int DISTANCE_IN_KM = 10;
     private final List<Place> places;
     private LocationBoundCalculator locationBoundCalculator;
 
