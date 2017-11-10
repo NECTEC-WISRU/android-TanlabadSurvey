@@ -31,7 +31,6 @@
         tools:src="@mipmap/ic_place_hospital"/>
 
     <LinearLayout
-        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"

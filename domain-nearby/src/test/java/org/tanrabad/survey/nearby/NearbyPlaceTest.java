@@ -1,13 +1,14 @@
 package org.tanrabad.survey.nearby;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 import org.junit.Test;
 import org.tanrabad.survey.entity.Place;
 import org.tanrabad.survey.entity.field.Location;
 import org.tanrabad.survey.nearby.repository.ImpNearbyPlaceRepository;
 import org.tanrabad.survey.nearby.repository.NearbyPlaceRepository;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 
@@ -94,7 +95,7 @@ public class NearbyPlaceTest {
         nearbyPlaces.add(taladThai);
 
         NearbyPlaceRepository nearbyPlaceRepository =
-                new ImpNearbyPlaceRepository(allPlaces);
+            new ImpNearbyPlaceRepository(allPlaces, 5);
 
         MergeAndSortNearbyPlaces mergeAndSortNearbyPlaces = new ImpMergeAndSortNearbyPlaces();
 

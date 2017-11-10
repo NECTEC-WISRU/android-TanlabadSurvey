@@ -16,20 +16,26 @@ public class ImpNearbyPlaceRepository implements NearbyPlaceRepository {
     public static final int DISTANCE_IN_KM = 10;
     private final List<Place> places;
     private LocationBoundCalculator locationBoundCalculator;
+    private int distanceKm;
 
     public ImpNearbyPlaceRepository(List<Place> allPlaces) {
-        this(allPlaces, new ImpLocationBoundCalculator());
+        this(allPlaces, DISTANCE_IN_KM);
     }
 
-    public ImpNearbyPlaceRepository(List<Place> allPlaces, LocationBoundCalculator locationBoundCalculator) {
+    public ImpNearbyPlaceRepository(List<Place> allPlaces, int distanceKm) {
+        this(allPlaces, distanceKm, new ImpLocationBoundCalculator());
+    }
+
+    public ImpNearbyPlaceRepository(List<Place> allPlaces, int distanceKm, LocationBoundCalculator locationBoundCalculator) {
         this.places = allPlaces;
         this.locationBoundCalculator = locationBoundCalculator;
+        this.distanceKm = distanceKm;
     }
 
     @Override public List<Place> findByLocation(final Location location) {
         if (places == null || places.isEmpty()) return null;
 
-        List<Place> place = getPlaceInsideLocationBoundary(places, locationBoundCalculator.get(location, DISTANCE_IN_KM));
+        List<Place> place = getPlaceInsideLocationBoundary(places, locationBoundCalculator.get(location, distanceKm));
         Collections.sort(place, new PlaceDistanceComparator(location));
         return place.isEmpty() ? null : place;
     }

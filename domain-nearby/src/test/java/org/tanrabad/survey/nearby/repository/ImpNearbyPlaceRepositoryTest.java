@@ -1,14 +1,15 @@
 package org.tanrabad.survey.nearby.repository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.tanrabad.survey.entity.Place;
 import org.tanrabad.survey.entity.field.Location;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -43,7 +44,7 @@ public class ImpNearbyPlaceRepositoryTest {
 
         when(locationBoundCalculator.get(myLocation, 5)).thenReturn(locationBound);
 
-        impNearbyPlacesWithLocation = new ImpNearbyPlaceRepository(places, locationBoundCalculator);
+        impNearbyPlacesWithLocation = new ImpNearbyPlaceRepository(places, 5, locationBoundCalculator);
 
         assertEquals(filteredPlace, impNearbyPlacesWithLocation.findByLocation(myLocation));
     }
@@ -63,7 +64,7 @@ public class ImpNearbyPlaceRepositoryTest {
 
         when(locationBoundCalculator.get(myLocation, 5)).thenReturn(locationBound);
 
-        impNearbyPlacesWithLocation = new ImpNearbyPlaceRepository(places, locationBoundCalculator);
+        impNearbyPlacesWithLocation = new ImpNearbyPlaceRepository(places, 5, locationBoundCalculator);
 
         assertNull(impNearbyPlacesWithLocation.findByLocation(myLocation));
     }
